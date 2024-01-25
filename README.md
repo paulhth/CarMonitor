@@ -1,8 +1,9 @@
 # Car Monitor by Paul Horvath
 
 License project developed by Paul Horvath Serban (AC CTI RO) - Polytechnic University of Timisoara.
+🎓 **paul.horvath@student.upt.ro** 🎓
 
-The proposed project is a system which effectively scand the cars' real-time parameters (such as instant velocity, engine revelations per minute, engine consumption, oil level, coolant level etc), retrieves the data through an OBD-II reader which communicates via Bluetooth to the ESP32 board. The ESP32 board then deploys the data to a web server hosted by itself, where a user with internet access can view the data and analyze it accordingly. This project is suitable for mulitple fleets owned by ride-sharing companies, which need an app to monitor their own cars and reduce maintanance cost.
+The proposed project is a system which effectively scans the cars' real-time parameters (such as instant velocity, engine revelations per minute, engine consumption, oil level, coolant level etc), retrieves the data through an OBD-II reader which communicates via Bluetooth to the ESP32 board. The ESP32 board then deploys the data to a web server hosted by itself, where a user with internet access can view the data and analyze it accordingly. This project is suitable for mulitple fleets owned by ride-sharing companies, which need an app to monitor their own cars and reduce maintanance cost.
 
 The project is developed on ESP32 microcontroller on a NodeMCU-32S development board. This specific development board has the Wifi and bluetooth implemented by default, modules which are used at their full capabilities in this project.
 
