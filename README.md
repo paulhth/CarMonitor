@@ -9,11 +9,11 @@ The project is developed on ESP32 microcontroller on a NodeMCU-32S development b
 
 # Organizing the project
 
-The project is organized in two phases: **Phase 1** and **Phase 2**.
+The project is organized in two phases: ![Phase 1](https://img.shields.io/badge/Phase-1-blue) and ![Phase 2](https://img.shields.io/badge/Phase-2-green).
 
-**Phase 1** is represented by the boards capability to successfully deploy and sustain a web server, where the real-time data will be prompted and displayed to the final user.
+![Phase 1](https://img.shields.io/badge/Phase-1-blue) is represented by the board's capability to successfully deploy and sustain a web server, where the real-time data will be prompted and displayed to the final user.
 
-**Phase 2** is represented by the boards capability to successfully pair itself with the OBD-II device through the Bluetooth module and successfully read and temporarily store the real-time data
+![Phase 2](https://img.shields.io/badge/Phase-2-green) is represented by the board's capability to successfully pair itself with the OBD-II device through the Bluetooth module and successfully read and temporarily store the real-time data.
 
 # Understanding the version control system
 
