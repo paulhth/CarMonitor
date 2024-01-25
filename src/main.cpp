@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <WiFi.h>
-#include <WebServer.h>
+#include "webhandler/webhandler.h"
 // include bluetooth module
 #include "BluetoothSerial.h"
 
@@ -12,7 +12,7 @@ BluetoothSerial SerialBT;
 #define AP_SSID "ESP32" // SSID of the ESP32 access point
 #define AP_PASS "12345" // Password of the ESP32 access point
 
-WebServer server(80); // Create a webserver object that listens for HTTP request on port 80
+WebServerHandler server;
 
 char XML[2048]; // XML buffer - must be large enough to hold all data sent to the ESP32 WebServer
 
@@ -25,11 +25,6 @@ IPAddress ip;
 
 bool isConnectedWifi = false;
 bool isConnectedBT = false;
-
-void handleRoot()
-{
-  server.send(200, "text/html", "<h1>You are connected</h1>");
-}
 
 void setup()
 {
@@ -50,9 +45,7 @@ void setup()
   Serial.print("IP Address: ");
   Serial.println(WiFi.localIP());
 
-  // Define routes
-  server.on("/", handleRoot); // Call handleRoot when a client requests URI "/"
-  server.begin();             // Start the server
+  server.begin(); // Start the server
 }
 
 void loop()
