@@ -6,8 +6,8 @@
 
 BluetoothSerial SerialBT;
 
-#define WIFI_SSID "Aghiz Love"
-#define WIFI_PASS "bucatar56"
+#define WIFI_SSID "THE BRACELET"
+#define WIFI_PASS "2010#PepsiHTH"
 
 #define AP_SSID "ESP32" // SSID of the ESP32 access point
 #define AP_PASS "12345" // Password of the ESP32 access point
