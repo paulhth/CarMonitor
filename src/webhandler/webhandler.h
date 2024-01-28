@@ -2,6 +2,8 @@
 #define WEBSERVERHANDLER_H
 
 #include <WebServer.h>
+#include <FS.h>
+#include <SPIFFS.h> // Include SPIFFS library
 
 class WebServerHandler
 {
