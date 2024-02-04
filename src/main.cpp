@@ -25,13 +25,21 @@ int historyIndex = 0;
 
 void updateHistory()
 {
-  // Update the history buffers with the latest values
-  speedHistory[historyIndex] = speedVariable;
-  rpmHistory[historyIndex] = rpmVariable;
+  // Add the latest values to the end of the history vectors
+  speedHistory.push_back(speedVariable);
+  rpmHistory.push_back(rpmVariable);
   // ... other variables ...
 
-  // Move to the next index or loop back to the beginning
-  historyIndex = (historyIndex + 1) % HISTORY_SIZE;
+  // If we've reached the maximum history size, remove the oldest value
+  if (speedHistory.size() > HISTORY_SIZE)
+  {
+    speedHistory.erase(speedHistory.begin());
+  }
+  if (rpmHistory.size() > HISTORY_SIZE)
+  {
+    rpmHistory.erase(rpmHistory.begin());
+  }
+  // ... repeat for other history vectors ...
 }
 
 void setup()
@@ -65,12 +73,20 @@ void loop()
     delay(1000);
   }
 
-  speedVariable += 1.2; // Increase speed by 1.2 km/h
-  rpmVariable += 100;   // Increase RPM by 100
   // Oil level and fuel consumption are typically not linear,
   // so you would update them based on your specific logic.
 
-  // Ensure variables stay within a realistic range (for testing)
+  /*----------------------TESTING----------------------*/
+  if (speedVariable >= 30)
+    speedVariable % 2 == 0 ? speedVariable -= 3 : speedVariable += 5;
+  else
+    speedVariable += 1; // Increase speed by 1.2 km/h
+
+  if (rpmVariable >= 2000)
+    rpmVariable % 2 == 0 ? rpmVariable -= 100 : rpmVariable += 200;
+  else
+    rpmVariable += 100; // Increase RPM by 100
+
   if (speedVariable > 200)
     speedVariable = 0;
   if (rpmVariable > 7000)
