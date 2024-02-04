@@ -5,6 +5,8 @@
 #include <FS.h>
 #include <SPIFFS.h> // Include SPIFFS library
 
+#define HISTORY_SIZE 10
+
 class WebServerHandler
 {
 public:

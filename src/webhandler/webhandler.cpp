@@ -5,8 +5,35 @@ extern int rpmVariable;
 extern int oilLevelVariable;
 extern int fuelConsumptionVariable;
 
+extern std::vector<float> speedHistory;
+extern std::vector<int> rpmHistory;
+
 // Initialize the WebServer on port 80
 WebServerHandler::WebServerHandler() : server(80) {}
+
+String join(const std::vector<int> &v, char separator)
+{
+    String result;
+    for (size_t i = 0; i < v.size(); ++i)
+    {
+        result += String(v[i]);
+        if (i < v.size() - 1)
+            result += separator;
+    }
+    return result;
+}
+
+String join(const std::vector<float> &v, char separator)
+{
+    String result;
+    for (size_t i = 0; i < v.size(); ++i)
+    {
+        result += String(v[i]);
+        if (i < v.size() - 1)
+            result += separator;
+    }
+    return result;
+}
 
 void WebServerHandler::begin()
 {
@@ -52,10 +79,18 @@ void WebServerHandler::handleFile(const String &path, const String &contentType)
 
 void WebServerHandler::handleSensorData()
 {
-    // Create a JSON string with your data
-    String jsonData = "{\"speed\":\"" + String(speedVariable) +
-                      "\", \"rpm\":\"" + String(rpmVariable) +
-                      "\", \"oil\":\"" + String(oilLevelVariable) +
-                      "\", \"fuel\":\"" + String(fuelConsumptionVariable) + "\"}";
+    // Create a JSON object with current and historical sensor data
+    String jsonData = "{";
+    jsonData += "\"historySize\":" + String(HISTORY_SIZE) + ",";
+    jsonData += "\"speedCurrent\":" + String(speedVariable) + ",";
+    jsonData += "\"rpmCurrent\":" + String(rpmVariable) + ",";
+    // ... other current values ...
+
+    // The join function must properly format the array as a JSON array
+    jsonData += "\"speedHistory\":[" + join(speedHistory, ',') + "],";
+    jsonData += "\"rpmHistory\":[" + join(rpmHistory, ',') + "]";
+    // ... other history arrays ...
+
+    jsonData += "}";
     server.send(200, "application/json", jsonData);
 }

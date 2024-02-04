@@ -2,6 +2,8 @@
 #include <WiFi.h>
 #include "webhandler/webhandler.h"
 
+#include <vector>
+
 #define WIFI_SSID "Romulus"
 #define WIFI_PASS "mihaelaterezia1977"
 
@@ -14,6 +16,23 @@ int speedVariable = 0;
 int rpmVariable = 0;
 int oilLevelVariable = 100;
 int fuelConsumptionVariable = 0;
+
+std::vector<float> speedHistory(HISTORY_SIZE, 0);
+std::vector<int> rpmHistory(HISTORY_SIZE, 0);
+// ... other variables ...
+
+int historyIndex = 0;
+
+void updateHistory()
+{
+  // Update the history buffers with the latest values
+  speedHistory[historyIndex] = speedVariable;
+  rpmHistory[historyIndex] = rpmVariable;
+  // ... other variables ...
+
+  // Move to the next index or loop back to the beginning
+  historyIndex = (historyIndex + 1) % HISTORY_SIZE;
+}
 
 void setup()
 {
@@ -56,6 +75,8 @@ void loop()
     speedVariable = 0;
   if (rpmVariable > 7000)
     rpmVariable = 0;
+
+  updateHistory(); // Update the history buffers
   server.handleClient();
   delay(1000);
 }

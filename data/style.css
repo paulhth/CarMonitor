@@ -10,6 +10,25 @@ body {
     justify-content: start;
 }
 
+.chart-container {
+    max-width: 600px; /* or any other size */
+    max-height: 300px; /* or any other size */
+    margin: auto;
+}   
+
+/* Or individually */
+#speedChart {
+    max-width: 600px;
+    max-height: 300px;
+    margin: auto;
+}
+
+#rpmChart {
+    max-width: 600px;
+    max-height: 300px;
+    margin: auto;
+}
+
 h1 {
     color: #007bff;
     text-align: center;
