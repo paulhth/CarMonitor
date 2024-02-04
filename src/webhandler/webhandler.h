@@ -16,6 +16,8 @@ public:
 
     // Define all other methods that handle specific routes
     void handleRoot();
+    void handleFile(const String &path, const String &contentType);
+    void handleSensorData();
 
 private:
     // Define your variables and methods for internal use
