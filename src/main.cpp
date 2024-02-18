@@ -1,11 +1,10 @@
+#include "webhandler/webhandler.h"
+#include "config/config.h"
+#include "bthandler/bthandler.h"
+
 #include <Arduino.h>
 #include <WiFi.h>
-#include "webhandler/webhandler.h"
-
 #include <vector>
-
-#define WIFI_SSID "THE BRACELET"
-#define WIFI_PASS "2010#PepsiHTH"
 
 WebServerHandler server;
 
@@ -60,6 +59,15 @@ void setup()
   Serial.println(WiFi.localIP());
 
   server.begin(); // Start the server
+
+  if (!SerialBT.begin("ESP32"))
+  {
+    Serial.println("An error occurred initializing Bluetooth");
+  }
+  else
+  {
+    Serial.println("Bluetooth initialized");
+  }
 }
 
 void loop()
@@ -76,7 +84,8 @@ void loop()
   // Oil level and fuel consumption are typically not linear,
   // so you would update them based on your specific logic.
 
-  /*----------------------TESTING----------------------*/
+#if (TESTING == true) /*----------------------TESTING----------------------*/
+
   if (speedVariable >= 30)
     speedVariable % 2 == 0 ? speedVariable -= 3 : speedVariable += 5;
   else
@@ -95,4 +104,11 @@ void loop()
   updateHistory(); // Update the history buffers
   server.handleClient();
   delay(1000);
+
+#else /*----------------------PRODUCTION----------------------*/
+
+  updateHistory(); // Update the history buffers
+  server.handleClient();
+  delay(1000);
+#endif
 }
