@@ -4,8 +4,8 @@
 
 #include <vector>
 
-#define WIFI_SSID "Romulus"
-#define WIFI_PASS "mihaelaterezia1977"
+#define WIFI_SSID "THE BRACELET"
+#define WIFI_PASS "2010#PepsiHTH"
 
 WebServerHandler server;
 
