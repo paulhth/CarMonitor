@@ -2,7 +2,7 @@
 
 extern int speedVariable;
 extern int rpmVariable;
-extern int oilLevelVariable;
+extern int oilTempVariable;
 extern int fuelConsumptionVariable;
 
 extern std::vector<float> speedHistory;

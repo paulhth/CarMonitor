@@ -3,18 +3,27 @@
 #include "bthandler/bthandler.h"
 
 #include <Arduino.h>
+
+#if (BACKEND_TESTING == false)
+#include "ELMduino.h"
+#endif
+
 #include <WiFi.h>
 #include <vector>
 
 WebServerHandler server;
 
+#if (BACKEND_TESTING == false)
+ELM327 ELM327Reader;
+#endif
+
 bool isConnectedWifi = false;
 bool isConnectedBT = false;
 
-int speedVariable = 0;
-int rpmVariable = 0;
-int oilLevelVariable = 100;
-int fuelConsumptionVariable = 0;
+int speedVariable;
+float rpmVariable;
+float oilTempVariable;
+int fuelConsumptionVariable;
 
 std::vector<float> speedHistory(HISTORY_SIZE, 0);
 std::vector<int> rpmHistory(HISTORY_SIZE, 0);
@@ -60,14 +69,21 @@ void setup()
 
   server.begin(); // Start the server
 
-  if (!SerialBT.begin("ESP32"))
+#if (BACKEND_TESTING == false)
+  SerialBT.begin("CarMonitor"); // Bluetooth device name
+
+  if (!ELM327Reader.begin(SerialBT))
   {
-    Serial.println("An error occurred initializing Bluetooth");
+    Serial.println("Failed to connect to the ELM327");
+    isConnectedBT = false;
   }
   else
   {
-    Serial.println("Bluetooth initialized");
+    Serial.println("Connected to the ELM327");
+    isConnectedBT = true;
   }
+  delay(1000); // Allow data to start flowing from the ELM327 to the ESP32
+#endif
 }
 
 void loop()
@@ -84,7 +100,7 @@ void loop()
   // Oil level and fuel consumption are typically not linear,
   // so you would update them based on your specific logic.
 
-#if (TESTING == true) /*----------------------TESTING----------------------*/
+#if (BACKEND_TESTING == true) /*----------------------TESTING----------------------*/
 
   if (speedVariable >= 30)
     speedVariable % 2 == 0 ? speedVariable -= 3 : speedVariable += 5;
@@ -106,6 +122,18 @@ void loop()
   delay(1000);
 
 #else /*----------------------PRODUCTION----------------------*/
+
+  ELM327Reader.nb_rx_state == ELM_SUCCESS ? rpmVariable = ELM327Reader.rpm() : ELM327Reader.ELM_ERROR = true;
+  ELM327Reader.nb_rx_state == ELM_SUCCESS ? speedVariable = ELM327Reader.kph() : ELM327Reader.ELM_ERROR = true;
+  ELM327Reader.nb_rx_state == ELM_SUCCESS ? oilTempVariable = ELM327Reader.oilTemp() : ELM327Reader.ELM_ERROR = true;
+  ELM327Reader.nb_rx_state == ELM_SUCCESS ? fuelConsumptionVariable = ELM327Reader.fuelRate() : ELM327Reader.ELM_ERROR = true;
+
+  if (ELM327Reader.ELM_ERROR)
+  {
+    Serial.println("Error reading from ELM327:\n");
+    ELM327Reader.printError();
+    ELM327Reader.ELM_ERROR = false;
+  }
 
   updateHistory(); // Update the history buffers
   server.handleClient();
