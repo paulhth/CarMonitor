@@ -37,6 +37,12 @@ There are several dependencies which are necessary for the project to work:
 > RAM:   [==       ] 17.5% (used 57428 bytes from 327680 bytes)\
 > Flash: [======== ] 78.5% (used 1543173 bytes from 1966080 bytes)
 
-# Known problems and their fixes:
+# Known problems and their fixes
 
 - When connecting to a hotspot: The network must be on 2.4GHz, the ESP-32 board cannot connect to 5GHz networks
+
+# Upcoming code and documentation aspects
+
+- When documenting, don't forget to add Sequence Diagrams in PlantUML. [Add the extension to VS Code](https://marketplace.visualstudio.com/items?itemName=jebbs.plantuml)
+- For code: -> Check if the parameters show up fine inside the local network
+            -> Possibility of remote host using AWS 
