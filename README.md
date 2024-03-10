@@ -39,4 +39,4 @@ There are several dependencies which are necessary for the project to work:
 
 # Known problems and their fixes:
 
-> When connecting to a hotspot: The network must be on 2.4GHz, the ESP-32 board cannot connect to 5GHz networks
+- When connecting to a hotspot: The network must be on 2.4GHz, the ESP-32 board cannot connect to 5GHz networks
