@@ -21,7 +21,11 @@ bool isConnectedWifi = false;
 bool isConnectedBT = false;
 
 int speedVariable;
+#if (BACKEND_TESTING == true)
+int rpmVariable;
+#else
 float rpmVariable;
+#endif
 float oilTempVariable;
 int fuelConsumptionVariable;
 
@@ -54,7 +58,7 @@ void setup()
 {
   pinMode(LED_BUILTIN, OUTPUT);
   Serial.begin(115200);
-
+  WiFi.mode(WIFI_STA);
   WiFi.begin(WIFI_SSID, WIFI_PASS);
   while (WiFi.status() != WL_CONNECTED)
   {
