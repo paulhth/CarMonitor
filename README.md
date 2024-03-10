@@ -36,3 +36,7 @@ There are several dependencies which are necessary for the project to work:
 > **Note:** At the moment, the ESP-32 board has the following memory layout:
 > RAM:   [==       ] 17.5% (used 57428 bytes from 327680 bytes)\
 > Flash: [======== ] 78.5% (used 1543173 bytes from 1966080 bytes)
+
+# Known problems and their fixes:
+
+> When connecting to a hotspot: The network must be on 2.4GHz, the ESP-32 board cannot connect to 5GHz networks
