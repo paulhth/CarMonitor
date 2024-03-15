@@ -1,6 +1,7 @@
 #include "webhandler/webhandler.h"
 #include "config/config.h"
-#include "bthandler/bthandler.h"
+// #include "bthandler/bthandler.h"
+#include "BluetoothSerial.h"
 
 #include <Arduino.h>
 
@@ -11,6 +12,7 @@
 #include <WiFi.h>
 #include <vector>
 
+BluetoothSerial SerialBT;
 WebServerHandler server;
 
 #if (BACKEND_TESTING == false)
@@ -74,9 +76,9 @@ void setup()
   server.begin(); // Start the server
 
 #if (BACKEND_TESTING == false)
-  SerialBT.begin("CarMonitor"); // Bluetooth device name
+  SerialBT.begin("ESP32-BT"); // Bluetooth device name
 
-  if (!ELM327Reader.begin(SerialBT))
+  if (!ELM327Reader.begin(SerialBT, 38400))
   {
     Serial.println("Failed to connect to the ELM327");
     isConnectedBT = false;
