@@ -3,7 +3,7 @@
 extern int speedVariable;
 extern int rpmVariable;
 extern int oilTempVariable;
-extern int fuelConsumptionVariable;
+extern float fuelConsumptionVariable;
 
 extern std::vector<float> speedHistory;
 extern std::vector<int> rpmHistory;
@@ -84,6 +84,8 @@ void WebServerHandler::handleSensorData()
     jsonData += "\"historySize\":" + String(HISTORY_SIZE) + ",";
     jsonData += "\"speedCurrent\":" + String(speedVariable) + ",";
     jsonData += "\"rpmCurrent\":" + String(rpmVariable) + ",";
+    jsonData += "\"oilTempCurrent\":" + String(oilTempVariable) + ",";
+    jsonData += "\"fuelConsumptionCurrent\":" + String(fuelConsumptionVariable) + ",";
     // ... other current values ...
 
     // The join function must properly format the array as a JSON array

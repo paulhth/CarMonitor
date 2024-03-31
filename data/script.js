@@ -52,6 +52,8 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 document.getElementById('speed').textContent = data.speedCurrent + ' km/h';
                 document.getElementById('rpm').textContent = data.rpmCurrent + ' RPM';
+                document.getElementById('oil').textContent = data.oilTempCurrent + ' C';
+                document.getElementById('fuel').textContent = data.fuelConsumptionCurrent + ' L/100km';
                 // ... update other fields ...
 
                 // Check if the history size changed

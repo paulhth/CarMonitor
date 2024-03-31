@@ -1,6 +1,5 @@
 #include "webhandler/webhandler.h"
 #include "config/config.h"
-// #include "bthandler/bthandler.h"
 #include "BluetoothSerial.h"
 
 #include <Arduino.h>
@@ -28,23 +27,19 @@ int rpmVariable;
 #else
 float rpmVariable;
 #endif
-float oilTempVariable;
-int fuelConsumptionVariable;
+int oilTempVariable;
+float fuelConsumptionVariable;
 
 std::vector<float> speedHistory(HISTORY_SIZE, 0);
 std::vector<int> rpmHistory(HISTORY_SIZE, 0);
-// ... other variables ...
 
 int historyIndex = 0;
 
 void updateHistory()
 {
-  // Add the latest values to the end of the history vectors
   speedHistory.push_back(speedVariable);
   rpmHistory.push_back(rpmVariable);
-  // ... other variables ...
 
-  // If we've reached the maximum history size, remove the oldest value
   if (speedHistory.size() > HISTORY_SIZE)
   {
     speedHistory.erase(speedHistory.begin());
@@ -53,7 +48,6 @@ void updateHistory()
   {
     rpmHistory.erase(rpmHistory.begin());
   }
-  // ... repeat for other history vectors ...
 }
 
 void setup()
@@ -107,22 +101,29 @@ void loop()
   // so you would update them based on your specific logic.
 
 #if (BACKEND_TESTING == true) /*----------------------TESTING----------------------*/
-
+  oilTempVariable = 95;
   if (speedVariable >= 30)
+  {
     speedVariable % 2 == 0 ? speedVariable -= 3 : speedVariable += 5;
-  else
-    speedVariable += 1; // Increase speed by 1.2 km/h
+    oilTempVariable += 3;
+  }
 
+  else
+  {
+    speedVariable += 1;
+    oilTempVariable -= 1;
+  }
   if (rpmVariable >= 2000)
     rpmVariable % 2 == 0 ? rpmVariable -= 100 : rpmVariable += 200;
   else
-    rpmVariable += 100; // Increase RPM by 100
+    rpmVariable += 100;
 
   if (speedVariable > 200)
     speedVariable = 0;
   if (rpmVariable > 7000)
     rpmVariable = 0;
 
+  fuelConsumptionVariable = speedVariable * 0.5;
   updateHistory(); // Update the history buffers
   server.handleClient();
   delay(1000);
