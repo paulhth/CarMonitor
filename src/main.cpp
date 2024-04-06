@@ -6,16 +6,18 @@
 
 #if (BACKEND_TESTING == false)
 #include "ELMduino.h"
+BluetoothSerial SerialBT;
 #endif
 
 #include <WiFi.h>
 #include <vector>
 
-BluetoothSerial SerialBT;
 WebServerHandler server;
 
 #if (BACKEND_TESTING == false)
 ELM327 ELM327Reader;
+#define ELM_PORT SerialBT
+#define DEBUG_PORT Serial
 #endif
 
 bool isConnectedWifi = false;
@@ -70,19 +72,25 @@ void setup()
   server.begin(); // Start the server
 
 #if (BACKEND_TESTING == false)
-  SerialBT.begin("ESP32-BT"); // Bluetooth device name
+  DEBUG_PORT.begin(115200);
+  // SerialBT.setPin("1234");
+  ELM_PORT.begin("ArduHUD", true);
 
-  if (!ELM327Reader.begin(SerialBT, 38400))
+  if (!ELM_PORT.connect("Android-Vlink"))
   {
-    Serial.println("Failed to connect to the ELM327");
-    isConnectedBT = false;
+    DEBUG_PORT.println("Couldn't connect to OBD scanner - Phase 1");
+    while (1)
+      ;
   }
-  else
+
+  if (!ELM327Reader.begin(ELM_PORT, true, 2000))
   {
-    Serial.println("Connected to the ELM327");
-    isConnectedBT = true;
+    Serial.println("Couldn't connect to OBD scanner - Phase 2");
+    while (1)
+      ;
   }
-  delay(1000); // Allow data to start flowing from the ELM327 to the ESP32
+
+  Serial.println("Connected to ELM327");
 #endif
 }
 
