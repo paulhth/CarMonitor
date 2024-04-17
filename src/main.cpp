@@ -2,6 +2,10 @@
 #include "config/config.h"
 #include "BluetoothSerial.h"
 
+#include "esp_wifi.h"
+#include "esp_bt.h"
+#include "esp_coexist.h"
+
 #include <Arduino.h>
 
 #if (BACKEND_TESTING == false)
@@ -27,7 +31,7 @@ int speedVariable;
 #if (BACKEND_TESTING == true)
 int rpmVariable;
 #else
-float rpmVariable;
+uint32_t rpmVariable = 0;
 #endif
 int oilTempVariable;
 float fuelConsumptionVariable;
@@ -55,6 +59,9 @@ void updateHistory()
 void setup()
 {
   pinMode(LED_BUILTIN, OUTPUT);
+
+  esp_coex_preference_set(ESP_COEX_PREFER_BALANCE);
+
   Serial.begin(115200);
   WiFi.mode(WIFI_STA);
   WiFi.begin(WIFI_SSID, WIFI_PASS);
@@ -62,6 +69,7 @@ void setup()
   {
     delay(1000);
     Serial.println("Connecting to WiFi...");
+    WiFi.begin(WIFI_SSID, WIFI_PASS);
   }
 
   digitalWrite(LED_BUILTIN, HIGH); // turn the LED on = WiFi connected
@@ -102,7 +110,7 @@ void loop()
     Serial.println("\nConnecting ...\n");
     digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
     isConnectedWifi = false;
-    delay(1000);
+    // delay(1000);
   }
 
   // Oil level and fuel consumption are typically not linear,
@@ -138,20 +146,26 @@ void loop()
 
 #else /*----------------------PRODUCTION----------------------*/
 
-  ELM327Reader.nb_rx_state == ELM_SUCCESS ? rpmVariable = ELM327Reader.rpm() : ELM327Reader.ELM_ERROR = true;
-  ELM327Reader.nb_rx_state == ELM_SUCCESS ? speedVariable = ELM327Reader.kph() : ELM327Reader.ELM_ERROR = true;
-  ELM327Reader.nb_rx_state == ELM_SUCCESS ? oilTempVariable = ELM327Reader.oilTemp() : ELM327Reader.ELM_ERROR = true;
-  ELM327Reader.nb_rx_state == ELM_SUCCESS ? fuelConsumptionVariable = ELM327Reader.fuelRate() : ELM327Reader.ELM_ERROR = true;
+  rpmVariable = ELM327Reader.rpm();
+  speedVariable = ELM327Reader.kph();
+  oilTempVariable = ELM327Reader.oilTemp();
+  fuelConsumptionVariable = ELM327Reader.fuelRate();
 
   if (ELM327Reader.ELM_ERROR)
   {
     Serial.println("Error reading from ELM327:\n");
     ELM327Reader.printError();
     ELM327Reader.ELM_ERROR = false;
+    Serial.println(rpmVariable);
+    Serial.println("\n");
   }
 
   updateHistory(); // Update the history buffers
   server.handleClient();
-  delay(1000);
+  // delay(1000);
 #endif
 }
+
+/*
+To add engineCoolantTemp and manifoldPressure.
+*/

@@ -5,4 +5,4 @@
 #define WIFI_SSID "iPhone Station"
 #define WIFI_PASS "blocuri13"
 
-#define BACKEND_TESTING true
+#define BACKEND_TESTING false
