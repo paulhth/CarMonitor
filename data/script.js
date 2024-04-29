@@ -80,5 +80,5 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => console.error('Unable to get sensor data:', error));
     }
     // Fetch sensor data every 1 second
-    setInterval(fetchSensorData, 1000);
+    setInterval(fetchSensorData, 50);
 });
