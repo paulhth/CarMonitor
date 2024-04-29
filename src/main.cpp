@@ -20,6 +20,7 @@ WebServerHandler server;
 
 #if (BACKEND_TESTING == false)
 ELM327 ELM327Reader;
+
 #define ELM_PORT SerialBT
 #define DEBUG_PORT Serial
 #endif
@@ -28,11 +29,13 @@ bool isConnectedWifi = false;
 bool isConnectedBT = false;
 
 int speedVariable;
+
 #if (BACKEND_TESTING == true)
 int rpmVariable;
 #else
 uint32_t rpmVariable = 0;
 #endif
+
 int oilTempVariable;
 float fuelConsumptionVariable;
 
@@ -41,6 +44,11 @@ std::vector<int> rpmHistory(HISTORY_SIZE, 0);
 
 int historyIndex = 0;
 
+/**
+ * @brief Update the history buffers with the latest sensor data.
+ * @param void
+ * @return void
+ */
 void updateHistory()
 {
   speedHistory.push_back(speedVariable);
@@ -56,67 +64,79 @@ void updateHistory()
   }
 }
 
+/**
+ * @brief Setup function for the Car Monitor system. Initializes the system and connects to the WiFi and ELM327.
+ * @param void
+ * @return void
+ */
 void setup()
 {
   pinMode(LED_BUILTIN, OUTPUT);
+  DEBUG_PORT.begin(115200);
 
-  esp_coex_preference_set(ESP_COEX_PREFER_BALANCE);
+  DEBUG_PORT.println("[1] 16%% - Setting ESP_COEX_PREFER_BALANCE.");
+  if (esp_coex_preference_set(ESP_COEX_PREFER_BALANCE) != ESP_OK)
+  {
+    DEBUG_PORT.println("[1] 16%% - ERROR - ESP_COEX_PREFER_BALANCE failed. Continuing...");
+  }
 
-  Serial.begin(115200);
-  WiFi.mode(WIFI_STA);
+  WiFi.mode(WIFI_STA); // Set the WiFi mode to station mode which allows the ESP32 to act as a client to a router //POATE SE VA STERGE
   WiFi.begin(WIFI_SSID, WIFI_PASS);
   while (WiFi.status() != WL_CONNECTED)
   {
     delay(1000);
-    Serial.println("Connecting to WiFi...");
-    WiFi.begin(WIFI_SSID, WIFI_PASS);
+    DEBUG_PORT.println("[2] 32%% - Connecting to WiFi...");
+    // WiFi.begin(WIFI_SSID, WIFI_PASS);
   }
 
   digitalWrite(LED_BUILTIN, HIGH); // turn the LED on = WiFi connected
-  Serial.println("Connected to WiFi");
-  Serial.print("IP Address: ");
-  Serial.println(WiFi.localIP());
+  DEBUG_PORT.println("[3] 48%% - Connected to WiFi");
+  DEBUG_PORT.print("      IP Address: ");
+  DEBUG_PORT.println(WiFi.localIP());
 
-  server.begin(); // Start the server
+  server.begin(); // Call the WebServerHandler::begin -> server(80).begin() //POATE SE VA MUTA SUB BT CONFIG
 
 #if (BACKEND_TESTING == false)
-  DEBUG_PORT.begin(115200);
   // SerialBT.setPin("1234");
   ELM_PORT.begin("ArduHUD", true);
 
+  DEBUG_PORT.println("[4] 64%% - Connecting to OBD scanner - Phase 1");
   if (!ELM_PORT.connect("Android-Vlink"))
   {
-    DEBUG_PORT.println("Couldn't connect to OBD scanner - Phase 1");
+    DEBUG_PORT.println("[4] 64%% - ERROR - Couldn't connect to OBD scanner - Phase 1");
     while (1)
       ;
   }
 
+  DEBUG_PORT.println("[5] 80%% - Connecting to OBD scanner - Phase 2");
   if (!ELM327Reader.begin(ELM_PORT, true, 2000))
   {
-    Serial.println("Couldn't connect to OBD scanner - Phase 2");
+    DEBUG_PORT.println("[5] 80%% - ERROR - Couldn't connect to OBD scanner - Phase 2");
     while (1)
       ;
   }
 
-  Serial.println("Connected to ELM327");
+  DEBUG_PORT.println("[6] 100%% - Connected to ELM327.");
 #endif
 }
 
+/**
+ * @brief Loop function for the Car Monitor system. Reads the sensor data and updates the history buffers.
+ * @param void
+ * @return void
+ */
 void loop()
 {
 
   if (WiFi.status() != WL_CONNECTED && isConnectedWifi)
   {
-    Serial.println("\nConnecting ...\n");
+    DEBUG_PORT.println("\nConnecting ...\n");
     digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
     isConnectedWifi = false;
-    // delay(1000);
+    delay(1000);
   }
 
-  // Oil level and fuel consumption are typically not linear,
-  // so you would update them based on your specific logic.
-
-#if (BACKEND_TESTING == true) /*----------------------TESTING----------------------*/
+#if (BACKEND_TESTING == true) /*----------------------TESTING USE CASEs----------------------*/
   oilTempVariable = 95;
   if (speedVariable >= 30)
   {
@@ -144,28 +164,27 @@ void loop()
   server.handleClient();
   delay(1000);
 
-#else /*----------------------PRODUCTION----------------------*/
+#else /*----------------------REAL USE CASE----------------------*/
 
   rpmVariable = ELM327Reader.rpm();
   speedVariable = ELM327Reader.kph();
   oilTempVariable = ELM327Reader.oilTemp();
   fuelConsumptionVariable = ELM327Reader.fuelRate();
-
-  if (ELM327Reader.ELM_ERROR)
-  {
-    Serial.println("Error reading from ELM327:\n");
-    ELM327Reader.printError();
-    ELM327Reader.ELM_ERROR = false;
-    Serial.println(rpmVariable);
-    Serial.println("\n");
-  }
-
+  /*
+    if (ELM327Reader.ELM_ERROR)
+    {
+      Serial.println("Error reading from ELM327:\n");
+      ELM327Reader.printError();
+      ELM327Reader.ELM_ERROR = false;
+    }
+  */
   updateHistory(); // Update the history buffers
   server.handleClient();
-  // delay(1000);
+  delay(1000);
 #endif
 }
 
 /*
-To add engineCoolantTemp and manifoldPressure.
+Add engineCoolantTemp and manifoldPressure.
+Add point system for the driver.
 */

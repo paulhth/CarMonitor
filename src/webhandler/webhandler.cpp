@@ -11,7 +11,7 @@ extern std::vector<int> rpmHistory;
 // Initialize the WebServer on port 80
 WebServerHandler::WebServerHandler() : server(80) {}
 
-String join(const std::vector<int> &v, char separator)
+String join(const std::vector<int> &v, char separator) // join for int elements
 {
     String result;
     for (size_t i = 0; i < v.size(); ++i)
@@ -23,7 +23,7 @@ String join(const std::vector<int> &v, char separator)
     return result;
 }
 
-String join(const std::vector<float> &v, char separator)
+String join(const std::vector<float> &v, char separator) // join for float elements
 {
     String result;
     for (size_t i = 0; i < v.size(); ++i)
@@ -42,7 +42,7 @@ void WebServerHandler::begin()
         Serial.println("An Error has occurred while mounting SPIFFS");
         return;
     }
-    // Define routes
+    // Define routes: "/" is the root URL, HTTP_GET is the HTTP method, and the lambda function is the handler
     server.on("/", [this]()
               { this->handleFile("/index.html", "text/html"); });
 
@@ -63,13 +63,21 @@ void WebServerHandler::handleClient()
     server.handleClient();
 }
 
+/**
+ * @brief Handle the client requests to the server and serve the requested files.
+ *
+ * @param String Constant address to the path to the requested file.
+ * @param String Constant address to the content type of the requested file.
+ *
+ * @return void
+ */
 void WebServerHandler::handleFile(const String &path, const String &contentType)
 {
     File file = SPIFFS.open(path, "r");
     if (!file)
     {
         Serial.println("Failed to open " + path + " for reading");
-        server.send(404, "text/plain", "File Not Found");
+        server.send(404, "text/plain", "File Not Found!");
         return;
     }
 
