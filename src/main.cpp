@@ -7,24 +7,17 @@
 #include "esp_coexist.h"
 
 #include <Arduino.h>
-
-#if (BACKEND_TESTING == false)
-#include "ELMduino.h"
-BluetoothSerial SerialBT;
-#endif
-
 #include <WiFi.h>
 #include <vector>
 
-WebServerHandler server;
 
 #if (BACKEND_TESTING == false)
-ELM327 ELM327Reader;
-
-#define ELM_PORT SerialBT
-#define DEBUG_PORT Serial
-
+    #include "ELMduino.h"
+    BluetoothSerial SerialBT;
+    ELM327 ELM327Reader;
 #endif
+
+WebServerHandler server;
 
 bool isConnectedWifi = false;
 
@@ -38,10 +31,10 @@ void setup()
     pinMode(LED_BUILTIN, OUTPUT);
     DEBUG_PORT.begin(115200);
 
-    DEBUG_PORT.println("[1] 16%% - Setting ESP_COEX_PREFER_BALANCE.");
-    if (esp_coex_preference_set(ESP_COEX_PREFER_BALANCE) != ESP_OK)
+    DEBUG_PORT.println("[1] 16% - Setting ESP_COEX_PREFER_WIFI.");
+    if (esp_coex_preference_set(ESP_COEX_PREFER_WIFI) != ESP_OK)
     {
-        DEBUG_PORT.println("[1] 16%% - ERROR - ESP_COEX_PREFER_BALANCE failed. Continuing...");
+        DEBUG_PORT.println("[1] 16% - ERROR - ESP_COEX_PREFER_WIFI failed. Continuing...");
     }
 
     WiFi.mode(WIFI_STA); // Set the WiFi mode to station mode which allows the ESP32 to act as a client to a router //POATE SE VA STERGE
@@ -49,12 +42,12 @@ void setup()
     while (WiFi.status() != WL_CONNECTED)
     {
         delay(1000);
-        DEBUG_PORT.println("[2] 32%% - Connecting to WiFi...");
+        DEBUG_PORT.println("[2] 32% - Connecting to WiFi...");
         // WiFi.begin(WIFI_SSID, WIFI_PASS);
     }
 
     digitalWrite(LED_BUILTIN, HIGH); // turn the LED on = WiFi connected
-    DEBUG_PORT.println("[3] 48%% - Connected to WiFi");
+    DEBUG_PORT.println("[3] 48% - Connected to WiFi");
     DEBUG_PORT.print("      IP Address: ");
     DEBUG_PORT.println(WiFi.localIP());
 
@@ -64,23 +57,23 @@ void setup()
     // SerialBT.setPin("1234");
     ELM_PORT.begin("ArduHUD", true);
 
-    DEBUG_PORT.println("[4] 64%% - Connecting to OBD scanner - Phase 1");
+    DEBUG_PORT.println("[4] 64% - Connecting to OBD scanner - Phase 1");
     if (!ELM_PORT.connect("Android-Vlink"))
     {
-        DEBUG_PORT.println("[4] 64%% - ERROR - Couldn't connect to OBD scanner - Phase 1");
+        DEBUG_PORT.println("[4] 64% - ERROR - Couldn't connect to OBD scanner - Phase 1");
         while (1)
             ;
     }
 
-    DEBUG_PORT.println("[5] 80%% - Connecting to OBD scanner - Phase 2");
+    DEBUG_PORT.println("[5] 80% - Connecting to OBD scanner - Phase 2");
     if (!ELM327Reader.begin(ELM_PORT, true, 2000))
     {
-        DEBUG_PORT.println("[5] 80%% - ERROR - Couldn't connect to OBD scanner - Phase 2");
+        DEBUG_PORT.println("[5] 80% - ERROR - Couldn't connect to OBD scanner - Phase 2");
         while (1)
             ;
     }
 
-    DEBUG_PORT.println("[6] 100%% - Connected to ELM327.");
+    DEBUG_PORT.println("[6] 100% - Connected to ELM327.");
 #endif
 }
 
@@ -100,7 +93,7 @@ void loop()
         delay(1000);
     }
 
-#if (BACKEND_TESTING == true) /*----------------------TESTING USE CASEs----------------------*/
+#if (BACKEND_TESTING == true) /*----------------------TESTING USE CASE----------------------*/
     oilTempVariable = 95;
     if (speedVariable >= 30)
     {
@@ -132,25 +125,6 @@ void loop()
 
     switch (obd_state)
     {
-    case SPEED:
-        speedVariable = ELM327Reader.kph();
-        rpmVariable = 0;
-        oilTempVariable = 0;
-        fuelConsumptionVariable = 0;
-
-        if (ELM327Reader.nb_rx_state == ELM_SUCCESS)
-        {
-            DEBUG_PORT.print("kph: ");
-            DEBUG_PORT.println(speedVariable);
-        }
-        else if (ELM327Reader.nb_rx_state != ELM_GETTING_MSG)
-        {
-            ELM327Reader.printError();
-        }
-
-        obd_state = ENG_RPM;
-        break;
-
     case ENG_RPM:
         speedVariable = 0;
         rpmVariable = ELM327Reader.rpm();
@@ -167,50 +141,12 @@ void loop()
             ELM327Reader.printError();
         }
 
-        obd_state = OIL_TEMP;
-        break;
-
-    case OIL_TEMP:
-        speedVariable = 0;
-        rpmVariable = 0;
-        oilTempVariable = ELM327Reader.oilTemp();
-        fuelConsumptionVariable = 0;
-
-        if (ELM327Reader.nb_rx_state == ELM_SUCCESS)
-        {
-            DEBUG_PORT.print("oilTemp: ");
-            DEBUG_PORT.println(oilTempVariable);
-        }
-        else if (ELM327Reader.nb_rx_state != ELM_GETTING_MSG)
-        {
-            ELM327Reader.printError();
-        }
-
-        obd_state = FUEL_RATE;
-        break;
-
-    case FUEL_RATE:
-        speedVariable = 0;
-        rpmVariable = 0;
-        oilTempVariable = 0;
-        fuelConsumptionVariable = ELM327Reader.fuelRate();
-
-        if (ELM327Reader.nb_rx_state == ELM_SUCCESS)
-        {
-            DEBUG_PORT.print("fuelRate: ");
-            DEBUG_PORT.println(fuelConsumptionVariable);
-        }
-        else if (ELM327Reader.nb_rx_state != ELM_GETTING_MSG)
-        {
-            ELM327Reader.printError();
-        }
-
-        obd_state = SPEED;
+        obd_state = ENG_RPM;
         break;
     }
-
     updateHistory(); // Update the history buffers
     server.handleClient();
+    delay(100);
 #endif
 }
 
