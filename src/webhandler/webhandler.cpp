@@ -1,9 +1,13 @@
 #include "webhandler.h"
 
-extern int speedVariable;
-extern int rpmVariable;
-extern int oilTempVariable;
-extern float fuelConsumptionVariable;
+extern uint32_t speedVariable;
+extern uint32_t rpmVariable;
+extern uint32_t voltageVariable;
+extern float throttleVariable;
+extern float coolantTempVariable;
+extern float loadVariable;
+extern float fuelLevelVariable;
+extern float oilTempVariable;
 
 extern std::vector<float> speedHistory;
 extern std::vector<int> rpmHistory;
@@ -92,8 +96,13 @@ void WebServerHandler::handleSensorData()
     jsonData += "\"historySize\":" + String(HISTORY_SIZE) + ",";
     jsonData += "\"speedCurrent\":" + String(speedVariable) + ",";
     jsonData += "\"rpmCurrent\":" + String(rpmVariable) + ",";
+    jsonData += "\"voltageCurrent\":" + String(voltageVariable) + ",";
+    jsonData += "\"coolantTempCurrent\":" + String(coolantTempVariable) + ",";
     jsonData += "\"oilTempCurrent\":" + String(oilTempVariable) + ",";
-    jsonData += "\"fuelConsumptionCurrent\":" + String(fuelConsumptionVariable) + ",";
+    jsonData += "\"loadCurrent\":" + String(loadVariable) + ",";
+    jsonData += "\"throttleCurrent\":" + String(throttleVariable) + ",";
+    jsonData += "\"fuelCurrent\":" + String(fuelLevelVariable) + ",";
+
     // ... other current values ...
 
     // The join function must properly format the array as a JSON array

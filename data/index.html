@@ -10,31 +10,58 @@
 
   <h2>by Paul Horvath</h2>
   <h1>Car Monitor</h1>
+  <p>In order to successfully observe the car parameters, you should first ensure that the OBD reader is paired to the ESP-32 board. Then, ensure that the ESP-32 is connected to the internet using the config file.</p>
   <p>Real-Time Measurements:</p>
 
   <table>
     <tr>
       <th>Speed</th>
-      <td id="speed">0 km/h</td>
+      <td id="speed"></td>
     </tr>
     <tr>
       <th>RPM</th>
-      <td id="rpm">0</td>
+      <td id="rpm"></td>
     </tr>
     <tr>
-      <th>Oil Temperature</th>
-      <td id="oil">0 C</td>
+      <th>Battery Voltage</th>
+      <td id="voltage"></td>
     </tr>
     <tr>
-      <th>Fuel Consumption</th>
-      <td id="fuel">0 L/100km</td>
+      <th>Coolant Temperature</th>
+      <td id="cool"></td>
     </tr>
   </table>
 
-  <canvas id="speedChart"></canvas>
-  <canvas id="rpmChart"></canvas>
+<!-- Chart containers -->
+<div class="charts-container">
+    <div class="chart-container">
+      <canvas id="rpmChart"></canvas>
+    </div>
+    <div class="chart-container">
+      <canvas id="speedChart"></canvas>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
 
+    <table>
+        <tr>
+            <th>Oil Temperature</th>
+            <td id="oil"></td>
+          </tr>
+        <tr>
+            <th>Engine Load</th>
+            <td id="load"></td>
+          </tr>
+          <tr>
+            <th>Throttle Position</th>
+            <td id="throttle"></td>
+          </tr>
+          <tr>
+            <th>Fuel Level</th>
+            <td id="fuel"></td>
+          </tr>
+    </table>
+    
 </html>

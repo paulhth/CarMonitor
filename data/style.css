@@ -1,7 +1,7 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #e9ecef;
-    color: #495057;
+    background-color: #cac8ee; /* Background color */
+    color: #495057; /* Text color */
     margin: 0;
     padding: 20px;
     display: flex;
@@ -10,13 +10,20 @@ body {
     justify-content: start;
 }
 
-.chart-container {
-    max-width: 600px;
-    /* or any other size */
-    max-height: 300px;
-    /* or any other size */
-    margin: auto;
+.charts-container {
+    display: flex;
+    justify-content: space-around; /* This will place equal space around each item */
+    width: 100%; /* Full width to accommodate both charts */
+    flex-wrap: wrap; /* Allows items to wrap on smaller screens */
 }
+
+.chart-container {
+    flex: 1 1 45%; /* Each container takes up about 45% of the flex container width */
+    max-width: 600px;
+    max-height: 300px;
+    margin: 10px; /* Optional for spacing around charts */
+}
+
 
 /* Or individually */
 #speedChart {
@@ -36,7 +43,7 @@ body {
 }
 
 h1 {
-    color: #007bff;
+    color: #4648c2; /* Heading color */
     text-align: center;
 }
 
@@ -48,40 +55,32 @@ h2 {
 
 p {
     margin-top: 5px;
-    text-align: center;
-}
-
-table {
-    width: 60%;
-    border-collapse: collapse;
-    margin-top: 20px;
+    text-align: left;
+    max-width: 50%;
+    line-height: 1.6;
+    word-wrap: break-word;
 }
 
 table,
-th,
-td {
-    border: 1px solid #dee2e6;
-    text-align: center;
-}
-
-th,
-td {
-    text-align: left;
+th, td {
+    width: 60%;
+    margin-top: 20px;
     padding: 12px;
+    text-align: left; /* Align text to the left for headers and cells */
 }
 
 th {
-    background-color: #007bff;
-    color: white;
+    background-color: #1d20ac;
+    color: white; /* Text color */
 }
 
 td {
-    background-color: #ffffff;
+    background-color: #ffffff; /* Table row color */
     text-align: center;
 }
 
 tr:nth-child(even) {
-    background-color: #f2f2f2;
+    background-color: #f2f2f2; /* Alternate row color */
 }
 
 @media (max-width: 600px) {

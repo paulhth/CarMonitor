@@ -1,0 +1,21 @@
+@startuml
+title Funcția loop()
+start
+
+:Setarea parametrilor WiFi;
+
+if (BACKEND_TESTING) then (Yes) 
+    while (true)
+        :Calculare valori dummy;
+        :Trimitere către web server;
+    endwhile
+else (No)
+    while (true)
+        :Determinare starea\nmașinii cu stări\nfinite;
+        :Trimitere PID corespunzator;
+        :Trimitere către web server;
+    endwhile
+endif
+stop
+
+@enduml

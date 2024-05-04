@@ -1,0 +1,16 @@
+void loop()
+{
+
+    if(i == 0)
+    {
+        DEBUG_PORT.print("==============1-20============\n");
+        DEBUG_PORT.print(supportedPIDs_1_20());
+        DEBUG_PORT.print("==============21-40===========\n");
+        DEBUG_PORT.print(supportedPIDs_21_40());
+        DEBUG_PORT.print("==============41-60===========\n");
+        DEBUG_PORT.print(supportedPIDs_41_60());
+        DEBUG_PORT.print("===============END============\n");
+        i++;
+    }
+
+}

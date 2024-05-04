@@ -1,0 +1,20 @@
+void loop()
+{
+
+        rpmVariable = ELM327Reader.oilTemp();
+
+        if (ELM327Reader.nb_rx_state == ELM_SUCCESS)
+        {
+            DEBUG_PORT.print("oil temp: ");
+            DEBUG_PORT.println(rpmVariable);
+            updateHistory(); // Update the history buffers
+            server.handleClient();
+        }
+        else if (ELM327Reader.nb_rx_state != ELM_GETTING_MSG)
+        {
+            DEBUG_PORT.print("==============ERROR===========");
+            ELM327Reader.printError();
+        }
+
+    //delay(100);
+}

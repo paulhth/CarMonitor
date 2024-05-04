@@ -25,7 +25,7 @@
  * @brief Stores the speed value read from the OBD scanner.
  * @note The speed value is in km/h and will be modified by SPEED state.
  */
-int speedVariable;
+uint32_t speedVariable;
 
 #if (BACKEND_TESTING == true)
     int rpmVariable;
@@ -38,23 +38,51 @@ int speedVariable;
 #endif
 
 /**
- * @brief Stores the oil temperature value read from the OBD scanner.
- * @note The oil temperature value will be modified by OIL_TEMP state.
+ * @brief Stores the voltage value read from the OBD scanner.
+ * @note The oil temperature value will be modified by VOLTAGE state.
  */
-int oilTempVariable;
+uint32_t voltageVariable;
 
 /**
- * @brief Stores the instant fuel consumption value read from the OBD scanner.
- * @note The instant fuel consumption is measured in L/h and the value will be modified by FUEL_RATE state.
+ * @brief Stores the throttle position in percentage read from the OBD scanner.
+ * @note The position is in % and the value will be modified by THROTTLE state.
  */
-float fuelConsumptionVariable;
+float throttleVariable;
+
+/**
+ * @brief Stores the coolant temperature value read from the OBD scanner.
+ * @note The value is measured in Celsius and the value will be modified by ENG_COOLANT state.
+ */
+float coolantTempVariable;
+
+/**
+ * @brief Stores the instant engine load value read from the OBD scanner.
+ * @note The load is measured in % and the value will be modified by LOAD state.
+ */
+float loadVariable;
+
+/**
+ * @brief Stores the fuel level value read from the OBD scanner.
+ * @note The instant fuel consumption is measured in % and the value will be modified by FUEL_LEVEL state.
+ */
+float fuelLevelVariable;
+
+/**
+ * @brief Stores the oil temperature value read from the OBD scanner.
+ * @note The temperature is measured in C and the value will be modified by OIL_TEMP state.
+ */
+float oilTempVariable;
 
 /**
  * @brief Typedef for the OBD PID states.
  * @param SPEED
  * @param ENG_RPM
+ * @param VOLTAGE
+ * @param THROTTLE
+ * @param ENG_COOLANT
+ * @param LOAD
+ * @param FUEL_LEVEL
  * @param OIL_TEMP
- * @param FUEL_RATE
  *
  * @note The OBD PID states are used in the state machine.
  */
@@ -62,8 +90,12 @@ typedef enum
 {
     SPEED,
     ENG_RPM,
-    OIL_TEMP,
-    FUEL_RATE
+    VOLTAGE,
+    THROTTLE,
+    ENG_COOLANT,
+    LOAD,
+    FUEL_LEVEL,
+    OIL_TEMP
 } obd_pid_states;
 
 /**

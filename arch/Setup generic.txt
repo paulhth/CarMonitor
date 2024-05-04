@@ -1,0 +1,20 @@
+@startuml
+title Funcția setup()
+start
+
+:Setarea parametrilor WiFi;
+
+while (Conexiune WiFi) is (No)
+    :Conectare la WiFi;
+endwhile (yes)
+
+if (BACKEND_TESTING) then (Yes)
+    :Conectare OBDII prin BT;
+    
+else (No)
+    
+endif
+
+stop
+
+@enduml
