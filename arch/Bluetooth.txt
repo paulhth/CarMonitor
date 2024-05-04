@@ -1,0 +1,30 @@
+@startuml
+title Activare Bluetooth
+start
+
+
+if (BACKEND_TESTING) then (No)
+    :Declarare obiect de tip\nBluetoothSerial;
+    :Activare BT sub numele\n"ArduHUD" și master;
+    if (Conectare la OBD) then (Yes)
+        if (Activare OBD) then (Yes)
+            note 
+                Dacă și activarea
+                OBD a avut loc cu 
+                succes, atunci
+                întreaga activare BT
+                a fost făcută cu succes.
+            end note
+        else (No)
+            stop
+        endif
+    else (No)
+        stop
+    endif
+else (Yes)
+    :Use Case pentru testare;
+endif
+
+stop
+
+@enduml

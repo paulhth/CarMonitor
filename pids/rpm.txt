@@ -1,0 +1,23 @@
+int counter = 100000;
+void loop()
+{
+    if(counter == 0){
+        rpmVariable = ELM327Reader.rpm();
+
+        if (ELM327Reader.nb_rx_state == ELM_SUCCESS)
+        {
+            DEBUG_PORT.print("rpm: ");
+            DEBUG_PORT.println(rpmVariable);
+            updateHistory(); // Update the history buffers
+            server.handleClient();
+        }
+        else if (ELM327Reader.nb_rx_state != ELM_GETTING_MSG)
+        {
+            DEBUG_PORT.print("==============ERROR===========");
+            ELM327Reader.printError();
+        }
+    }
+    else counter--;
+
+    //delay(100);
+}

@@ -52,6 +52,12 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 document.getElementById('speed').textContent = data.speedCurrent + ' km/h';
                 document.getElementById('rpm').textContent = data.rpmCurrent + ' RPM';
+                document.getElementById('voltage').textContent = data.voltageCurrent + ' V';
+                document.getElementById('cool').textContent = data.coolantTempCurrent + ' C';
+                document.getElementById('oil').textContent = data.oilTempCurrent + ' C';
+                document.getElementById('load').textContent = data.loadCurrent + ' %';
+                document.getElementById('throttle').textContent = data.throttleCurrent + ' %';
+                document.getElementById('fuel').textContent = data.fuelCurrent + ' %';
                 // ... update other fields ...
 
                 // Check if the history size changed
@@ -77,6 +83,6 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(error => console.error('Unable to get sensor data:', error));
     }
-    // Fetch sensor data every 1 second
-    setInterval(fetchSensorData, 1000);
+    // Fetch sensor data
+    setInterval(fetchSensorData, 1);
 });
