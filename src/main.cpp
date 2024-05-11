@@ -2,9 +2,6 @@
 #include "config/config.h"
 #include "BluetoothSerial.h"
 
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-
 #include "esp_wifi.h"
 #include "esp_bt.h"
 #include "esp_coexist.h"
@@ -14,7 +11,7 @@
 #include <vector>
 
 
-#if (BACKEND_TESTING == false)
+#if (SERVER_TESTING == false)
     #include "ELMduino.h"
     BluetoothSerial SerialBT;
     ELM327 ELM327Reader;
@@ -41,7 +38,7 @@ void setup()
     {
         DEBUG_PORT.println("[1] 16% - ERROR - ESP_COEX_PREFER_WIFI failed. Continuing...");
     }
-
+    
     WiFi.mode(WIFI_STA); // Set the WiFi mode to station mode which allows the ESP32 to act as a client to a router //POATE SE VA STERGE
     WiFi.begin(WIFI_SSID, WIFI_PASS);
     while (WiFi.status() != WL_CONNECTED)
@@ -58,7 +55,7 @@ void setup()
 
     server.begin(); // Call the WebServerHandler::begin -> server(80).begin() //POATE SE VA MUTA SUB BT CONFIG
 
-#if (BACKEND_TESTING == false)
+#if (SERVER_TESTING == false)
     // SerialBT.setPin("1234");
     ELM_PORT.begin("ArduHUD", true);
 
@@ -71,7 +68,7 @@ void setup()
     }
 
     DEBUG_PORT.println("[5] 80% - Connecting to OBD scanner - Phase 2");
-    if (!ELM327Reader.begin(ELM_PORT, true, 2000))
+    if (!ELM327Reader.begin(ELM_PORT, true, 2000)) // 2nd param: bool for debug prints
     {
         DEBUG_PORT.println("[5] 80% - ERROR - Couldn't connect to OBD scanner - Phase 2");
         while (1)
@@ -92,7 +89,7 @@ static float voltageTemp, throttleTemp, coolantTemp, loadTemp, fuelTemp, oilTemp
 void loop()
 {
 
-#if (BACKEND_TESTING == true) /*----------------------TESTING USE CASE----------------------*/
+#if (SERVER_TESTING == true) /*----------------------TESTING USE CASE----------------------*/
     voltageVariable = 95;
     coolantTempVariable = 85;
     if (speedVariable >= 30)
@@ -130,11 +127,12 @@ void loop()
 
 #else /*----------------------REAL USE CASE----------------------*/
 
-        switch (obd_state)
+    switch (obd_state)
     {
     case ENG_RPM:
         rpmVariable = ELM327Reader.rpm();
         speedVariable = speedTemp;
+        oilTempVariable = oilTemp;
         if (ELM327Reader.nb_rx_state == ELM_SUCCESS)
         {
             DEBUG_PORT.print("rpm: ");
@@ -155,6 +153,7 @@ void loop()
     case SPEED:
         speedVariable = ELM327Reader.kph();
         rpmVariable = rpmTemp;
+        oilTempVariable = oilTemp;
         if(speedVariable <= 220){
             if (ELM327Reader.nb_rx_state == ELM_SUCCESS)
             {
@@ -169,9 +168,32 @@ void loop()
                 ELM327Reader.printError();
             }
         }
+        obd_state = ENG_COOLANT;
+        break;
+    
+    case ENG_COOLANT:
+        rpmVariable = rpmTemp;
+        speedVariable = speedTemp;
+        coolantTempVariable = ELM327Reader.engineCoolantTemp();
+            if (ELM327Reader.nb_rx_state == ELM_SUCCESS)
+            {
+                DEBUG_PORT.print("coolantTemp: ");
+                DEBUG_PORT.println(coolantTempVariable);
+                if(coolantTempVariable)coolantTemp = coolantTempVariable;
+                if(coolantTemp && !coolantTempVariable) coolantTempVariable = coolantTemp;
+                delay(100);
+                updateHistory(); // Update the history buffers
+                server.handleClient();
+            }
+            else if (ELM327Reader.nb_rx_state != ELM_GETTING_MSG)
+            {
+                ELM327Reader.printError();
+            }
+
         obd_state = ENG_RPM;
         break;
     }
+    delay(100); //
 #endif
 }
 
@@ -179,13 +201,13 @@ void loop()
 Add point system for the driver.
 
 works:
-kph !
-rpm !
-battery voltage (float) !
+kph !!!!
+rpm !!!!
+battery voltage (float) !!!!
 engine coolant temp !
 oil temp !
-engine load !
-throttle !
+engine load !!!!
+throttle !!!!
 fuel level 
 
 doesnt work:

@@ -2,10 +2,12 @@
 //#define WIFI_PASS "2010#PepsiHTH"
 // #define WIFI_SSID "Aghiz Love"
 // #define WIFI_PASS "bucatar56"
-#define WIFI_SSID "iPhone Station"
-#define WIFI_PASS "blocuri13"
+//#define WIFI_SSID "iPhone Station"
+//#define WIFI_PASS "blocuri13"
 //#define WIFI_SSID "Oratoriu_2.4"
 //#define WIFI_PASS "paulgabriel"
+#define WIFI_SSID "Romulus"
+#define WIFI_PASS "mihaelaterezia1977"
 
 /**
  * @brief Macro to enable or disable the backend testing mode for the web server.
@@ -16,7 +18,7 @@
  *
  * @warning The value of this macro will determine the behavior of the web server. It can either display the real-time sensor data or the testing data.
  */
-#define BACKEND_TESTING false
+#define SERVER_TESTING true
 
 #define ELM_PORT SerialBT
 #define DEBUG_PORT Serial
@@ -27,7 +29,7 @@
  */
 uint32_t speedVariable;
 
-#if (BACKEND_TESTING == true)
+#if (SERVER_TESTING == true)
     int rpmVariable;
 #else
     /**

@@ -14,7 +14,7 @@
 #include <vector>
 
 
-#if (BACKEND_TESTING == false)
+#if (SERVER_TESTING == false)
     #include "ELMduino.h"
     BluetoothSerial SerialBT;
     ELM327 ELM327Reader;
@@ -58,7 +58,7 @@ void setup()
 
     server.begin(); // Call the WebServerHandler::begin -> server(80).begin() //POATE SE VA MUTA SUB BT CONFIG
 
-#if (BACKEND_TESTING == false)
+#if (SERVER_TESTING == false)
     // SerialBT.setPin("1234");
     ELM_PORT.begin("ArduHUD", true);
 
@@ -90,7 +90,7 @@ void setup()
 void loop()
 {
 
-#if (BACKEND_TESTING == true) /*----------------------TESTING USE CASE----------------------*/
+#if (SERVER_TESTING == true) /*----------------------TESTING USE CASE----------------------*/
     oilTempVariable = 95;
     coolantTempVariable = 85;
     if (speedVariable >= 30)

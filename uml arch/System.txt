@@ -1,9 +1,15 @@
 @startuml
-title Activare Bluetooth
+title Arhitectura sistemului
 start
 
+    :Includere dependinte;
 
-if (BACKEND_TESTING) then (No)
+    :Declarare obiect de tip\nWebServerHandler;
+    :Setare mod WiFi;
+    :Conectare WiFi;
+    :Pornire server;
+
+if (SERVER_TESTING) then (No)
     :Declarare obiect de tip\nBluetoothSerial;
     :Activare BT sub numele\n"ArduHUD" și master;
     if (Conectare la OBD) then (Yes)
@@ -15,6 +21,7 @@ if (BACKEND_TESTING) then (No)
                 întreaga activare BT
                 a fost făcută cu succes.
             end note
+            :Continuare execuție;
         else (No)
             stop
         endif
@@ -22,7 +29,12 @@ if (BACKEND_TESTING) then (No)
         stop
     endif
 else (Yes)
-    :Use Case pentru testare;
+    note
+        Daca e **Yes**:
+        Use Case pentru testare
+        Daca e **No**:
+        Use Case normal
+    end note
 endif
 
 stop

@@ -4,7 +4,7 @@ start
 
 :Setarea parametrilor WiFi;
 
-if (BACKEND_TESTING) then (Yes) 
+if (SERVER_TESTING) then (Yes) 
     while (true)
         :Calculare valori dummy;
         :Trimitere către web server;

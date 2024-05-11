@@ -3,7 +3,7 @@ title Car Monitor
 start
 
 
-if (BACKEND_TESTING) then (Yes)
+if (SERVER_TESTING) then (Yes)
     :Use Case pentru testare;
     
 else (No)

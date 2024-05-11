@@ -24,6 +24,20 @@ body {
     margin: 10px; /* Optional for spacing around charts */
 }
 
+button {
+    padding: 10px 20px;
+    background-color: #4648c2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #3638a2;
+}
+
 
 /* Or individually */
 #speedChart {
