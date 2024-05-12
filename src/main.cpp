@@ -133,12 +133,19 @@ void loop()
     case ENG_RPM:
         rpmVariable = ELM327Reader.rpm();
         speedVariable = speedTemp;
+        voltageVariable = voltageTemp;
+        throttleVariable = throttleTemp;
+        coolantTempVariable = coolantTemp;
+        loadVariable = loadTemp;
+        fuelLevelVariable = fuelTemp;
+        oilTempVariable = oilTemp;
         if (ELM327Reader.nb_rx_state == ELM_SUCCESS)
         {
             DEBUG_PORT.print("rpm: ");
             DEBUG_PORT.println(rpmVariable);
             if(rpmVariable)rpmTemp = rpmVariable;
             if(rpmTemp && !rpmVariable) rpmVariable = rpmTemp;
+            delay(100);
             updateHistory(); // Update the history buffers
             server.handleClient();
         }
@@ -153,12 +160,189 @@ void loop()
     case SPEED:
         speedVariable = ELM327Reader.kph();
         rpmVariable = rpmTemp;
+        voltageVariable = voltageTemp;
+        throttleVariable = throttleTemp;
+        coolantTempVariable = coolantTemp;
+        loadVariable = loadTemp;
+        fuelLevelVariable = fuelTemp;
+        oilTempVariable = oilTemp;
         if(speedVariable <= 220){
             if (ELM327Reader.nb_rx_state == ELM_SUCCESS)
             {
                 DEBUG_PORT.print("kph: ");
                 DEBUG_PORT.println(speedVariable);
                 speedTemp = speedVariable;
+                delay(100);
+                updateHistory(); // Update the history buffers
+                server.handleClient();
+            }
+            else if (ELM327Reader.nb_rx_state != ELM_GETTING_MSG)
+            {
+                ELM327Reader.printError();
+            }
+        }
+        obd_state = VOLTAGE;
+        break;
+
+    case VOLTAGE:
+        voltageVariable = ELM327Reader.batteryVoltage();
+        rpmVariable = rpmTemp;
+        speedVariable = speedTemp;
+        throttleVariable = throttleTemp;
+        coolantTempVariable = coolantTemp;
+        loadVariable = loadTemp;
+        fuelLevelVariable = fuelTemp;
+        oilTempVariable = oilTemp;
+        if(voltageVariable <= 15.0 && voltageVariable >= 0.0){
+            if (ELM327Reader.nb_rx_state == ELM_SUCCESS)
+            {
+                DEBUG_PORT.print("voltage: ");
+                DEBUG_PORT.println(voltageVariable);
+                if(voltageVariable)voltageTemp = voltageVariable;
+                if(voltageTemp && !voltageVariable) voltageVariable = rpmTemp;
+                delay(100);
+                updateHistory(); // Update the history buffers
+                server.handleClient();
+            }
+            else if (ELM327Reader.nb_rx_state != ELM_GETTING_MSG)
+            {
+                ELM327Reader.printError();
+            }
+        }
+
+        obd_state = THROTTLE;
+        break;
+
+    case THROTTLE:
+        throttleVariable = ELM327Reader.throttle();
+        voltageVariable = voltageTemp;
+        rpmVariable = rpmTemp;
+        speedVariable = speedTemp;
+        coolantTempVariable = coolantTemp;
+        loadVariable = loadTemp;
+        fuelLevelVariable = fuelTemp;
+        oilTempVariable = oilTemp;
+        if(throttleVariable < 100){
+            if (ELM327Reader.nb_rx_state == ELM_SUCCESS)
+            {
+                DEBUG_PORT.print("throttle: ");
+                DEBUG_PORT.println(throttleVariable);
+                if(throttleVariable)throttleTemp = throttleVariable;
+                if(throttleTemp && !throttleVariable) throttleVariable = throttleTemp;
+                delay(100);
+                updateHistory(); // Update the history buffers
+                server.handleClient();
+            }
+            else if (ELM327Reader.nb_rx_state != ELM_GETTING_MSG)
+            {
+                ELM327Reader.printError();
+            }
+        }
+        obd_state = ENG_COOLANT;
+        break;
+
+    case ENG_COOLANT:
+        voltageVariable = voltageTemp;
+        rpmVariable = rpmTemp;
+        speedVariable = speedTemp;
+        throttleVariable = throttleTemp;
+        coolantTempVariable = ELM327Reader.engineCoolantTemp();
+        loadVariable = loadTemp;
+        fuelLevelVariable = fuelTemp;
+        oilTempVariable = oilTemp;
+        if(coolantTempVariable > 0 && coolantTempVariable < 150){
+            if (ELM327Reader.nb_rx_state == ELM_SUCCESS)
+            {
+                DEBUG_PORT.print("coolantTemp: ");
+                DEBUG_PORT.println(coolantTempVariable);
+                if(coolantTempVariable)coolantTemp = coolantTempVariable;
+                if(coolantTemp && !coolantTempVariable) coolantTempVariable = coolantTemp;
+                delay(100);
+                updateHistory(); // Update the history buffers
+                server.handleClient();
+            }
+            else if (ELM327Reader.nb_rx_state != ELM_GETTING_MSG)
+            {
+                ELM327Reader.printError();
+            }
+        }
+
+        obd_state = LOAD;
+        break;
+
+    case LOAD:
+        loadVariable = ELM327Reader.engineLoad();
+        voltageVariable = voltageTemp;
+        rpmVariable = rpmTemp;
+        speedVariable = speedTemp;
+        throttleVariable = throttleTemp;
+        coolantTempVariable = coolantTemp;
+        fuelLevelVariable = fuelTemp;
+        oilTempVariable = oilTemp;  
+        if(loadVariable < 100.0 && loadVariable > 0.0){
+            if (ELM327Reader.nb_rx_state == ELM_SUCCESS)
+            {
+                DEBUG_PORT.print("load: ");
+                DEBUG_PORT.println(loadVariable);
+                if(loadVariable)loadTemp = loadVariable;
+                if(loadTemp && !loadVariable) loadVariable = loadTemp;
+                delay(100);
+                updateHistory(); // Update the history buffers
+                server.handleClient();
+            }
+            else if (ELM327Reader.nb_rx_state != ELM_GETTING_MSG)
+            {
+                ELM327Reader.printError();
+            }
+        }
+        obd_state = FUEL_LEVEL;
+        break;
+
+    case FUEL_LEVEL:
+        fuelLevelVariable = ELM327Reader.fuelLevel();
+        voltageVariable = voltageTemp;
+        rpmVariable = rpmTemp;
+        speedVariable = speedTemp;
+        throttleVariable = throttleTemp;
+        coolantTempVariable = coolantTemp;
+        loadVariable = loadTemp;
+        oilTempVariable = oilTemp;
+        if(fuelLevelVariable < 100.0 && fuelLevelVariable > 0.0){
+            if (ELM327Reader.nb_rx_state == ELM_SUCCESS)
+            {
+                DEBUG_PORT.print("fuelLevel: ");
+                DEBUG_PORT.println(fuelLevelVariable);
+                if(fuelLevelVariable)fuelTemp = fuelLevelVariable;
+                if(fuelTemp && !fuelLevelVariable) fuelLevelVariable = fuelTemp;
+                delay(100);
+                updateHistory(); // Update the history buffers
+                server.handleClient();
+            }
+            else if (ELM327Reader.nb_rx_state != ELM_GETTING_MSG)
+            {
+                ELM327Reader.printError();
+            }
+        }
+        obd_state = OIL_TEMP;
+        break;
+
+    case OIL_TEMP:
+        oilTempVariable = ELM327Reader.oilTemp();
+        voltageVariable = voltageTemp;
+        rpmVariable = rpmTemp;
+        speedVariable = speedTemp;
+        throttleVariable = throttleTemp;
+        coolantTempVariable = coolantTemp;
+        loadVariable = loadTemp;
+        fuelLevelVariable = fuelTemp;
+        if(oilTempVariable < 150.0 && oilTempVariable > 0.0){
+            if (ELM327Reader.nb_rx_state == ELM_SUCCESS)
+            {
+                DEBUG_PORT.print("oilTemp: ");
+                DEBUG_PORT.println(oilTempVariable);
+                if(oilTempVariable)oilTemp = oilTempVariable;
+                if(oilTemp && !oilTempVariable) oilTempVariable = oilTemp;
+                delay(100);
                 updateHistory(); // Update the history buffers
                 server.handleClient();
             }
