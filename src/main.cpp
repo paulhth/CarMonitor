@@ -127,12 +127,12 @@ void loop()
 
 #else /*----------------------REAL USE CASE----------------------*/
 
+
     switch (obd_state)
     {
     case ENG_RPM:
         rpmVariable = ELM327Reader.rpm();
         speedVariable = speedTemp;
-        oilTempVariable = oilTemp;
         if (ELM327Reader.nb_rx_state == ELM_SUCCESS)
         {
             DEBUG_PORT.print("rpm: ");
@@ -153,7 +153,6 @@ void loop()
     case SPEED:
         speedVariable = ELM327Reader.kph();
         rpmVariable = rpmTemp;
-        oilTempVariable = oilTemp;
         if(speedVariable <= 220){
             if (ELM327Reader.nb_rx_state == ELM_SUCCESS)
             {
@@ -168,36 +167,15 @@ void loop()
                 ELM327Reader.printError();
             }
         }
-        obd_state = ENG_COOLANT;
-        break;
-    
-    case ENG_COOLANT:
-        rpmVariable = rpmTemp;
-        speedVariable = speedTemp;
-        coolantTempVariable = ELM327Reader.engineCoolantTemp();
-            if (ELM327Reader.nb_rx_state == ELM_SUCCESS)
-            {
-                DEBUG_PORT.print("coolantTemp: ");
-                DEBUG_PORT.println(coolantTempVariable);
-                if(coolantTempVariable)coolantTemp = coolantTempVariable;
-                if(coolantTemp && !coolantTempVariable) coolantTempVariable = coolantTemp;
-                delay(100);
-                updateHistory(); // Update the history buffers
-                server.handleClient();
-            }
-            else if (ELM327Reader.nb_rx_state != ELM_GETTING_MSG)
-            {
-                ELM327Reader.printError();
-            }
-
         obd_state = ENG_RPM;
         break;
     }
-    delay(100); //
 #endif
 }
 
 /*
+cc44f791b278b42d6ec6d5735562d3c72a646893 - 8 parameters
+3152cc9491115158dbf6b77de17b678066de39bb - 2 parameters
 Add point system for the driver.
 
 works:

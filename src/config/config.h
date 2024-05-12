@@ -1,13 +1,13 @@
-//#define WIFI_SSID "THE BRACELET"
-//#define WIFI_PASS "2010#PepsiHTH"
+#define WIFI_SSID "THE BRACELET"
+#define WIFI_PASS "2010#PepsiHTH"
 // #define WIFI_SSID "Aghiz Love"
 // #define WIFI_PASS "bucatar56"
 //#define WIFI_SSID "iPhone Station"
 //#define WIFI_PASS "blocuri13"
 //#define WIFI_SSID "Oratoriu_2.4"
 //#define WIFI_PASS "paulgabriel"
-#define WIFI_SSID "Romulus"
-#define WIFI_PASS "mihaelaterezia1977"
+//#define WIFI_SSID "Romulus"
+//#define WIFI_PASS "mihaelaterezia1977"
 
 /**
  * @brief Macro to enable or disable the backend testing mode for the web server.
