@@ -2,6 +2,10 @@
 #include "config/config.h"
 #include "BluetoothSerial.h"
 
+//include freertos
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+
 #include "esp_wifi.h"
 #include "esp_bt.h"
 #include "esp_coexist.h"
@@ -132,6 +136,7 @@ void loop()
     {
     case ENG_RPM:
         rpmVariable = ELM327Reader.rpm();
+        taskYIELD();
         speedVariable = speedTemp;
         voltageVariable = voltageTemp;
         throttleVariable = throttleTemp;
@@ -159,6 +164,7 @@ void loop()
 
     case SPEED:
         speedVariable = ELM327Reader.kph();
+        taskYIELD();
         rpmVariable = rpmTemp;
         voltageVariable = voltageTemp;
         throttleVariable = throttleTemp;
@@ -186,6 +192,7 @@ void loop()
 
     case VOLTAGE:
         voltageVariable = ELM327Reader.batteryVoltage();
+        taskYIELD();
         rpmVariable = rpmTemp;
         speedVariable = speedTemp;
         throttleVariable = throttleTemp;
@@ -215,6 +222,7 @@ void loop()
 
     case THROTTLE:
         throttleVariable = ELM327Reader.throttle();
+        taskYIELD();
         voltageVariable = voltageTemp;
         rpmVariable = rpmTemp;
         speedVariable = speedTemp;
@@ -247,6 +255,7 @@ void loop()
         speedVariable = speedTemp;
         throttleVariable = throttleTemp;
         coolantTempVariable = ELM327Reader.engineCoolantTemp();
+        taskYIELD();
         loadVariable = loadTemp;
         fuelLevelVariable = fuelTemp;
         oilTempVariable = oilTemp;
@@ -272,6 +281,7 @@ void loop()
 
     case LOAD:
         loadVariable = ELM327Reader.engineLoad();
+        taskYIELD();
         voltageVariable = voltageTemp;
         rpmVariable = rpmTemp;
         speedVariable = speedTemp;
@@ -300,6 +310,7 @@ void loop()
 
     case FUEL_LEVEL:
         fuelLevelVariable = ELM327Reader.fuelLevel();
+        taskYIELD();
         voltageVariable = voltageTemp;
         rpmVariable = rpmTemp;
         speedVariable = speedTemp;
@@ -328,6 +339,7 @@ void loop()
 
     case OIL_TEMP:
         oilTempVariable = ELM327Reader.oilTemp();
+        taskYIELD();
         voltageVariable = voltageTemp;
         rpmVariable = rpmTemp;
         speedVariable = speedTemp;

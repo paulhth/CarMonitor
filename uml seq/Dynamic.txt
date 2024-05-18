@@ -1,5 +1,18 @@
 @startuml
-    alt SERVER_TESTING 
 
-    end
+title Diagrama de secvență dinamică
+
+User -> CarMonitor: Pornire sistem
+activate CarMonitor
+CarMonitor -> CarMonitor: Inițializare
+CarMonitor -> OBD: Interogare parametru
+activate OBD
+OBD -> OBD: Formare răspuns
+OBD -> CarMonitor: Răspuns bytes
+deactivate OBD
+CarMonitor -> CarMonitor: Procesare date
+CarMonitor -> CarMonitor: Afișare pe server
+CarMonitor -> User: Interpretare
+deactivate CarMonitor
+
 @enduml
