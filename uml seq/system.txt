@@ -2,7 +2,7 @@
 
 title Diagrama de secvență pentru CarMonitor (1)
 
-participant System
+participant Sistem as System
 participant CarMonitor #0330fc
 participant Server as Server #99FF99
 participant ELMduino #fcba03

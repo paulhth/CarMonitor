@@ -22,7 +22,7 @@ public:
     void handleSensorData();
 
 private:
-    // Define your variables and methods for internal use
+    
 };
 
 #endif

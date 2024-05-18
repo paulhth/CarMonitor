@@ -1,0 +1,59 @@
+@startuml
+
+title Diagrama de dinamică pentru metoda begin()
+
+participant CarMonitor #0330fc
+participant Server as server #99FF99
+participant SPIFFS
+participant Interfața as Interface 
+
+activate CarMonitor
+CarMonitor -> server: server.begin()
+activate server
+server -> Interface: Activare
+activate Interface
+server -> SPIFFS: begin(true)
+note left: Dacă montarea a eșuat,\nse fisierul va fi reformatat.
+activate SPIFFS
+SPIFFS -> server: Status
+deactivate SPIFFS
+
+server -> server: Definire căi pentru\nfisierele web
+note left
+Caile sunt definite
+pentru /index.html
+/style.css
+/script.js
+si /data pentru metoda
+handleSensorData()
+end note
+
+loop
+    server --> Interface: handleSensorData 
+    note right
+        Formeaza String json
+        pentru script.js. Rol
+        de handler
+    end note
+end
+group WebServerHandler::handleFile()
+    server -> SPIFFS: open(path)
+    activate SPIFFS
+    note over SPIFFS
+        Se folosesc caile 
+        definite anterior
+        pentru apelarea 
+        open(path) si modul
+        'r' = read.
+    end note
+
+    alt esuare open
+        server -> server: Streamfile(fisier)
+        server -> server: Inchide fisier
+    else open cu succes
+        SPIFFS -> server: Status
+        server -> Interface: Eroare 404
+        destroy Interface
+    end
+end
+@enduml
