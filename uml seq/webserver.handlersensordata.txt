@@ -1,0 +1,54 @@
+@startuml
+
+title Diagrama de secvență pentru metoda handleSensorData()
+
+participant CarMonitor #0330fc
+participant Server as server #99FF99
+participant SPIFFS
+participant Interfața as Interface 
+
+activate CarMonitor
+CarMonitor -> server: server.begin()
+activate server
+server -> Interface: Activare
+activate Interface
+server -> SPIFFS: begin(true)
+activate SPIFFS
+SPIFFS -> server: Status
+deactivate SPIFFS
+
+server -> server: Definire căi pentru\nfișierele web
+activate server
+
+loop handleSensorData()
+    server -> server: Declarare jsonData\nca obiect de tip String.
+    server -> server: Construire String și\nintroducere separator
+    note right
+        În construirea String-ului
+        se includ parametrii doriți
+        a fi afișați.
+    end note
+
+    server -> server: Introducere în String\nistoricul vitezei si rpm
+    server -> server: join()
+    activate server
+    group join(std::vector<T>&, char)
+        loop i=0;i<v.size()-1;i++
+            server -> server: Adăugare element in String
+        end
+        server -> server: Adăugare separator
+        server -> server: Returnare String
+        note right of server: String final returnat\ncătre handleSensorData()
+        deactivate server
+    end
+    
+    server -> server: Adăugare terminator
+    server -> Interface: jsonData
+end
+deactivate server
+
+rnote over server #white
+    <b>Continuare cu metoda
+            <b>handleFile()
+end note
+@enduml

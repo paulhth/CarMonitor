@@ -1,6 +1,6 @@
 @startuml
 
-title Diagrama de dinamică pentru metoda begin()
+title Diagrama de secvență pentru metoda begin()
 
 participant CarMonitor #0330fc
 participant Server as server #99FF99
@@ -13,7 +13,7 @@ activate server
 server -> Interface: Activare
 activate Interface
 server -> SPIFFS: begin(true)
-note left: Dacă montarea a eșuat,\nse fisierul va fi reformatat.
+note left: Dacă montarea a eșuat,\nfisierul va fi reformatat.
 activate SPIFFS
 SPIFFS -> server: Status
 deactivate SPIFFS
@@ -29,12 +29,13 @@ handleSensorData()
 end note
 
 loop
-    server --> Interface: handleSensorData 
+    server --> server: handleSensorData 
     note right
         Formeaza String json
         pentru script.js. Rol
         de handler
     end note
+    server -> Interface: jsonData
 end
 group WebServerHandler::handleFile()
     server -> SPIFFS: open(path)
