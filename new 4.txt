@@ -28,4 +28,8 @@ numarul de referinte pe care il am e ok
 
 
 DECI: 
-termin de scris interfata, reorganizez, scriu testarea, configurarea si planul de afaceri,concluzie etc.
+termin de scris interfata,
+reorganizez, 
+scriu testarea, 
+configurarea si planul de afaceri,
+concluzie etc.
