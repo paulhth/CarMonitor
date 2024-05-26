@@ -5,10 +5,10 @@ curpins = rezumat
 a doua introducere = sota la sisteme de monitorizare al parametrilor masinilor
 carly sota (sota interfete si aplicatii)
 
-Fara absstract
+Fara abstract
 
 am doua introduceri:
-CAPITOLUL 1: prima pe mai multe pagini, zic ca masina are aceleasi parametri dar nu au aceleasi valor, este nevoie de interfatare cu acesti parametri, s-a hotarat standardizarea,  FLEXRAY, CAN, ETH  = necesitatea si modul in care au fost introduse PRIMUL CAPITOL si se termina cu standardul EOBD 
+CAPITOLUL 1: prima pe mai multe pagini, zic ca masina are aceleasi parametri dar nu au aceleasi valori, este nevoie de interfatare cu acesti parametri, s-a hotarat standardizarea,  FLEXRAY, CAN, ETH  = necesitatea si modul in care au fost introduse PRIMUL CAPITOL si se termina cu standardul EOBD 
 
 CAPITOLUL 2: STATE OF THE ART - EOBD, se termina enuntand: domne, tinand cont de toate cele disctuate, imi propun sa fac o aplicatie care sa citeasca prin OBD si sa ii afiseze pe un webserver
 
@@ -28,8 +28,9 @@ numarul de referinte pe care il am e ok
 
 
 DECI: 
-termin de scris interfata,
-reorganizez, 
+termin de scris interfata, DNE
+reorganizez,  DNE
 scriu testarea, 
 configurarea si planul de afaceri,
 concluzie etc.
+completez introducerea
