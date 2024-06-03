@@ -1,0 +1,30 @@
+@startuml
+
+title Fig. 5.1.4 Diagrama starilor în procesul de testare al sistemului
+
+State ENG_RPM
+State SPEED
+State VOLTAGE
+State THROTTLE
+State ENG_COOLANT
+State LOAD
+State FUEL_LEVEL
+State OIL_TEMP
+
+[*] -up-> ENG_RPM
+ENG_RPM -down[#red]-> SPEED
+SPEED --> VOLTAGE
+SPEED -down[#red]-> THROTTLE
+VOLTAGE --> THROTTLE
+THROTTLE --> ENG_COOLANT
+THROTTLE -down[#red]-> LOAD
+LOAD -up[#red]-> ENG_RPM
+ENG_COOLANT --> LOAD
+
+LOAD --> FUEL_LEVEL
+LOAD --> OIL_TEMP
+
+OIL_TEMP --> ENG_RPM
+FUEL_LEVEL --> ENG_RPM
+
+@enduml

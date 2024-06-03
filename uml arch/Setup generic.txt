@@ -1,5 +1,5 @@
 @startuml
-title Funcția setup()
+title Fig. 3.2.2 Funcția setup()
 start
 
 :Setarea parametrilor WiFi;

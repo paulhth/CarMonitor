@@ -1,6 +1,12 @@
 @startuml
 
-title Diagrama de secvență pentru interogarea rpm
+title Fig. 4.1.2.1 Diagrama de secvență pentru interogarea rpm
+
+participant User
+participant CarMonitor #0330fc
+participant ELMduino #fcba03
+participant OBD 
+participant ECU
 
 User -> CarMonitor: Interogare rpm()
 activate CarMonitor

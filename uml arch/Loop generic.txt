@@ -1,5 +1,5 @@
 @startuml
-title Funcția loop()
+title Fig. 3.2.3 Funcția loop()
 start
 
 :Setarea parametrilor WiFi;

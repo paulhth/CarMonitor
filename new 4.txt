@@ -30,7 +30,26 @@ numarul de referinte pe care il am e ok
 DECI: 
 termin de scris interfata, DNE
 reorganizez,  DNE
-scriu testarea, 
-configurarea si planul de afaceri,
-concluzie etc.
-completez introducerea
+scriu testarea, DNE
+adaug index la figuri si diagrame DNE
+configurarea si planul de afaceri DNE
+completez sota
+concluzia
+
+Month	Units Sold	Revenue (RON)	Total Monthly Cost (RON)	Profit (RON)
+1	2	5000	14505.34	-9505.34
+2	3	7500	14701.65	-6201.65
+3	5	12500	14959.04	-3459.04
+4	6	15000	15301.17	-3001.17
+5	9	22500	15746.89	6753.11
+6	13	32500	16336.44	16163.56
+7	19	47500	17134.84	30365.16
+8	27	67500	18223.80	49276.20
+9	38	95000	19695.67	75304.33
+10	53	132500	21789.42	110710.58
+11	74	185000	23617.23	161382.77
+12	94	235000	26668.92	208331.08
+
+INMPLEMENTARI VIITOARE
+
+Lastly, the project emphasized the importance of scalability, ensuring that the system can be easily expanded or upgraded as needed. The modular design of both the hardware and software components allows for straightforward integration of new features or enhancements. This flexibility is essential for keeping pace with technological advancements and changing user needs. The easy scalability of the CarGuard Monitor system ensures that it can grow alongside the business, adapting to new challenges and opportunities without requiring significant overhauls or redesigns.

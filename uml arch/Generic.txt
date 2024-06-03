@@ -1,5 +1,5 @@
 @startuml
-title Car Monitor
+title Fig. 3.2.1 Car Monitor
 start
 
 

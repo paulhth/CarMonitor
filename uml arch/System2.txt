@@ -1,5 +1,5 @@
 @startuml
-title Arhitectura sistemului
+title Fig. 3.5.1.2 Arhitectura sistemului
 start
 
 while (true)

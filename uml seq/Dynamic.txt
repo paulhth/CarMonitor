@@ -1,6 +1,10 @@
 @startuml
 
-title Diagrama de secvență dinamică
+title Fig. 4.1.1.1 Diagrama de secvență dinamică
+
+participant User
+participant CarMonitor #0330fc
+participant OBD
 
 User -> CarMonitor: Pornire sistem
 activate CarMonitor
