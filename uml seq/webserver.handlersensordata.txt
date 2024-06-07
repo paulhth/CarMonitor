@@ -1,6 +1,6 @@
 @startuml
 
-title Fig. 4.2.3.1 Diagrama de secvență pentru metoda handleSensorData()
+title Fig. 4.2.3.1. Diagrama de secvență pentru metoda handleSensorData()
 
 participant CarMonitor #0330fc
 participant Server as server #99FF99

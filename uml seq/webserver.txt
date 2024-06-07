@@ -1,6 +1,6 @@
 @startuml
 
-title Fig. 4.2.1.1 Diagrama de dinamică pentru WebAsyncServer
+title Fig. 4.2.1.1. Diagrama de dinamică pentru WebAsyncServer
 
 participant Sistem
 participant CarMonitor #0330fc

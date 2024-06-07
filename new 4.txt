@@ -33,7 +33,7 @@ reorganizez,  DNE
 scriu testarea, DNE
 adaug index la figuri si diagrame DNE
 configurarea si planul de afaceri DNE
-completez sota DNE?
+completez sota DNE
 concluzia DNE
 fix bibliografie
 
@@ -74,3 +74,42 @@ Scanner OBDII de bază	Scăzut	Ușor (prin aplicație)	Mică	Mică	Diagnoză de 
 Scanner OBDII avansat	Mare	Greu	Mică	Mare	Diagnoză avansată
 Sistem DYI	Mediu	Mediu	Mică	Medie	Monitorizarea depinde de senzorii plasați de utilizator
 Car Monitor	Scăzut	Mediu	Mare	Medie	Monitorizarea parametrilor în timp real (disponibili în API) + diagnoză de bază al DTC
+
+
+
+
+
+
+asepcte generale, alt titlu, istoric OBD DNE
+capitolul 3 ii spun altfel decat arhitectura = conceptia unui 
+in arhi am module, ceva ce culege date,
+3.1 introducerea arhitecrurii, ce folosesc, ce se potriveste pentru ce am nevoie DNE
+primul subvapotil: ce am nevoie,  DNE
+la 3.2 zic ca se potriveste esp-32 DNE
+la 3.3 redenumesc DNE
+si la 4,1 implementare modul bluetooth DNE
+CAPITOL 3 ARHITECRUEA SISTEMULUI CARMONITOR DNE
+
+nu merge o singura subsectiune 3.3.1 (ar trebui cel putin 3.3.2) DNE
+
+IMPLEMENTARE Detaliata e pleonasm (DEtalii de implementare / modul de implelentare) DNE
+
+4.1.2 interogarea de parametrii DNE
+
+4.2 implementarea sevrverului de monitorizare si in el povestesc ca e webasync DNE
+
+4.3.1 modific in nu aspecte generale DNE
+
+4.5 testare si configurare DNE
+
+cap 5 are legatura cu planul de afaceri = premize antreprenoriale DNE
+
+
+
+DE COMPLETAT cu imagini din timpul testarii
+2 demo uri, unul mai lung in care arat cum conectez obd, cum se conecteaza placa, si ce arata (4 parametrii)
+alti 4 parametrii in al doilea demo mai scurt
+
+De facut prezentare
+
+

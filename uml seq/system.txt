@@ -1,6 +1,6 @@
 @startuml
 
-title Fig. 4.1.3.1 Diagrama de secvență pentru CarMonitor
+title Fig. 4.1.3.1. Diagrama de secvență pentru CarMonitor
 
 participant Sistem as System
 participant CarMonitor #0330fc
@@ -75,7 +75,7 @@ end
 
 
 @startuml
-title Fig. 4.1.3.2 Diagrama de secvență pentru CarMonitor
+title Fig. 4.1.3.2. Diagrama de secvență pentru CarMonitor
 
 participant CarMonitor #0330fc
 participant Server as Server #99FF99

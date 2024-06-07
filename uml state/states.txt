@@ -1,6 +1,6 @@
 @startuml
 
-title Fig. 5.1.4 Diagrama starilor în procesul de testare al sistemului
+title Fig. 4.5.4 Diagrama starilor în procesul de testare al sistemului
 
 State ENG_RPM
 State SPEED

@@ -1,5 +1,5 @@
 @startuml
-title Fig. 3.3.1.1 Activare Bluetooth
+title Fig. 3.3.1. Activare Bluetooth
 start
 
 

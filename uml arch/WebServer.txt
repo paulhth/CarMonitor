@@ -1,5 +1,5 @@
 @startuml
-title Fig. 3.4.1.1 Activare Web Server
+title Fig. 3.4.1. Activare Web Server
 start
     :Includere dependinte;
     :Setare mod WiFi;

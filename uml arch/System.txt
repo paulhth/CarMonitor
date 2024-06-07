@@ -1,5 +1,5 @@
 @startuml
-title Fig. 3.5.1.1 Arhitectura sistemului
+title Fig. 3.5.1. Arhitectura sistemului
 start
 
     :Includere dependinte;

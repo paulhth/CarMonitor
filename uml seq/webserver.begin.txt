@@ -1,6 +1,6 @@
 @startuml
 
-title Fig. 4.2.2.1 Diagrama de secvență pentru metoda begin()
+title Fig. 4.2.2.1. Diagrama de secvență pentru metoda begin()
 
 participant CarMonitor #0330fc
 participant Server as server #99FF99
