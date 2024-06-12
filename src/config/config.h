@@ -1,4 +1,4 @@
-//#define WIFI_SSID "THE BRACELET"
+//#define WIFI_SSID "SIE-duba1"
 //#define WIFI_PASS "2010#PepsiHTH"
 //#define WIFI_SSID "Aghiz Love"
 //#define WIFI_PASS "bucatar56"
