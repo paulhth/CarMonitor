@@ -1,11 +1,13 @@
-//#define WIFI_SSID "THE BRACELET"
+//#define WIFI_SSID "SIE-duba1"
 //#define WIFI_PASS "2010#PepsiHTH"
-// #define WIFI_SSID "Aghiz Love"
-// #define WIFI_PASS "bucatar56"
+//#define WIFI_SSID "Aghiz Love"
+//#define WIFI_PASS "bucatar56"
 #define WIFI_SSID "iPhone Station"
 #define WIFI_PASS "blocuri13"
 //#define WIFI_SSID "Oratoriu_2.4"
 //#define WIFI_PASS "paulgabriel"
+//#define WIFI_SSID "Romulus"
+//#define WIFI_PASS "mihaelaterezia1977"
 
 /**
  * @brief Macro to enable or disable the backend testing mode for the web server.
@@ -16,10 +18,12 @@
  *
  * @warning The value of this macro will determine the behavior of the web server. It can either display the real-time sensor data or the testing data.
  */
-#define BACKEND_TESTING false
+#define SERVER_TESTING false
 
 #define ELM_PORT SerialBT
 #define DEBUG_PORT Serial
+
+
 
 /**
  * @brief Stores the speed value read from the OBD scanner.
@@ -27,7 +31,7 @@
  */
 uint32_t speedVariable;
 
-#if (BACKEND_TESTING == true)
+#if (SERVER_TESTING == true)
     int rpmVariable;
 #else
     /**
@@ -35,6 +39,10 @@ uint32_t speedVariable;
      * @note The rpm value will be modified by ENG_RPM state.
      */
     uint32_t rpmVariable = 0;
+
+    unsigned long int ONE_MIN    =         60000;
+    unsigned long int TWO_MIN    =         120000;
+    unsigned long int FIVE_MIN   =         300000;
 #endif
 
 /**

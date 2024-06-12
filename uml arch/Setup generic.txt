@@ -1,5 +1,5 @@
 @startuml
-title Funcția setup()
+title Fig. 3.2.2. Funcția setup()
 start
 
 :Setarea parametrilor WiFi;
@@ -8,7 +8,7 @@ while (Conexiune WiFi) is (No)
     :Conectare la WiFi;
 endwhile (yes)
 
-if (BACKEND_TESTING) then (Yes)
+if (SERVER_TESTING) then (Yes)
     :Conectare OBDII prin BT;
     
 else (No)

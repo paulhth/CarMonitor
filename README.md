@@ -8,6 +8,33 @@ The proposed project is a system that effectively scans the cars' real-time para
 
 The project is developed on ESP-32 microcontroller on a NodeMCU-32S development board. This specific development board has the Wifi and Bluetooth implemented by default, modules which are used at their full capabilities in this project.
 
+
+ # [RO] Rularea proiectului
+
+1. Se conecteaza cititorul OBD-II (Vgate iCar Pro V2) la masina.
+> Este necesar ca masina sa aiba minim contactul pus dar se recomanda sa se porneasca motorul masinii.
+
+2. Se conecteaza ESP-32 la o sursa de alimentare. 
+> Este recomandat sa se conecteze prin USB la Laptopul dotat cu extensia PlatformIO in Visual Studio Code, sau orice aplicatie care are integrat un Serial Monitor pentru a urmari statusul lui ESP-32.
+> 
+- :warning: In cazul in care placa nu are codul incarcat in memoria sa, este necesara urcarea prin apasarea butonului PlatformIO: Upload. Acesta este un script care compileaza sistemul, iar daca nu sunt erori, va sterge memoria placii si o va incarca cu noul cod dorit. Dupa terminarea incarcarii, codul se va rula automat si terminalul de monitorizare se va deschide. 
+
+3. ESP-32 se va conecta automat atat la reteaua setata, cat si la cititorul OBD-II. Acesta va incepe sa initializez canalul de comunicare cu cititorul, apoi va interoga parametrii setati. Acesti parametri vor fi afisati pe serverul web in timp real.
+
+ # [EN] Running the project
+1.  Connect the OBD-II reader (Vgate iCar Pro V2) to the car.
+
+> The car must have at least the ignition on, but it is recommended to start the engine.
+
+2.  Connect the ESP-32 to a power source.
+
+> It is recommended to connect it via USB to a laptop equipped with the PlatformIO extension in Visual Studio Code, or any application that has an integrated Serial Monitor to monitor the status of the ESP-32.
+
+-   :warning: If the board does not have the code loaded into its memory, it is necessary to upload it by pressing the PlatformIO: Upload button. This is a script that compiles the system, and if there are no errors, it will erase the board's memory and load it with the new desired code. After the upload is complete, the code will run automatically, and the monitoring terminal will open.
+
+3.  The ESP-32 will automatically connect to both the set network and the OBD-II reader. It will start to initialize the communication channel with the reader and then query the set parameters. These parameters will be displayed on the web server in real-time.
+
+
 # Organizing the project
 
 The project is organized in two phases: ![Phase 1](https://img.shields.io/badge/Phase-1-blue) and ![Phase 2](https://img.shields.io/badge/Phase-2-green).

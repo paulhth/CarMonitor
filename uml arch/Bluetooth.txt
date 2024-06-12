@@ -1,9 +1,9 @@
 @startuml
-title Activare Bluetooth
+title Fig. 3.3.1. Activare Bluetooth
 start
 
 
-if (BACKEND_TESTING) then (No)
+if (SERVER_TESTING) then (No)
     :Declarare obiect de tip\nBluetoothSerial;
     :Activare BT sub numele\n"ArduHUD" și master;
     if (Conectare la OBD) then (Yes)
@@ -15,6 +15,7 @@ if (BACKEND_TESTING) then (No)
                 întreaga activare BT
                 a fost făcută cu succes.
             end note
+            :Continuare execuție;
         else (No)
             stop
         endif

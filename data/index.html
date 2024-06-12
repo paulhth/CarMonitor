@@ -13,6 +13,8 @@
   <p>In order to successfully observe the car parameters, you should first ensure that the OBD reader is paired to the ESP-32 board. Then, ensure that the ESP-32 is connected to the internet using the config file.</p>
   <p>Real-Time Measurements:</p>
 
+  <button id="toggleButton" onclick="toggleDataFetch()">Freeze Reading</button>
+
   <table>
     <tr>
       <th>Speed</th>
@@ -42,26 +44,26 @@
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <table>
+    <tr>
+        <th>Oil Temperature</th>
+        <td id="oil"></td>
+      </tr>
+    <tr>
+        <th>Engine Load</th>
+        <td id="load"></td>
+      </tr>
+      <tr>
+        <th>Throttle Position</th>
+        <td id="throttle"></td>
+      </tr>
+      <tr>
+        <th>Fuel Level</th>
+        <td id="fuel"></td>
+      </tr>
+</table>
+
+<script src="script.js"></script>
 </body>
 
-    <table>
-        <tr>
-            <th>Oil Temperature</th>
-            <td id="oil"></td>
-          </tr>
-        <tr>
-            <th>Engine Load</th>
-            <td id="load"></td>
-          </tr>
-          <tr>
-            <th>Throttle Position</th>
-            <td id="throttle"></td>
-          </tr>
-          <tr>
-            <th>Fuel Level</th>
-            <td id="fuel"></td>
-          </tr>
-    </table>
-    
 </html>

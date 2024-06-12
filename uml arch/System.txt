@@ -1,0 +1,42 @@
+@startuml
+title Fig. 3.5.1. Arhitectura sistemului
+start
+
+    :Includere dependinte;
+
+    :Declarare obiect de tip\nWebServerHandler;
+    :Setare mod WiFi;
+    :Conectare WiFi;
+    :Pornire server;
+
+if (SERVER_TESTING) then (No)
+    :Declarare obiect de tip\nBluetoothSerial;
+    :Activare BT sub numele\n"ArduHUD" și master;
+    if (Conectare la OBD) then (Yes)
+        if (Activare OBD) then (Yes)
+            note 
+                Dacă și activarea
+                OBD a avut loc cu 
+                succes, atunci
+                întreaga activare BT
+                a fost făcută cu succes.
+            end note
+            :Continuare execuție;
+        else (No)
+            stop
+        endif
+    else (No)
+        stop
+    endif
+else (Yes)
+    note
+        Daca e **Yes**:
+        Use Case pentru testare
+        Daca e **No**:
+        Use Case normal
+    end note
+endif
+
+stop
+
+@enduml

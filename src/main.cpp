@@ -2,6 +2,7 @@
 #include "config/config.h"
 #include "BluetoothSerial.h"
 
+//include freertos
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
@@ -14,10 +15,13 @@
 #include <vector>
 
 
-#if (BACKEND_TESTING == false)
+#if (SERVER_TESTING == false)
     #include "ELMduino.h"
     BluetoothSerial SerialBT;
     ELM327 ELM327Reader;
+
+    int timingVar1 = 0;
+    int timingVar2 = 0;
 #endif
 
 WebServerHandler server;
@@ -41,7 +45,7 @@ void setup()
     {
         DEBUG_PORT.println("[1] 16% - ERROR - ESP_COEX_PREFER_WIFI failed. Continuing...");
     }
-
+    
     WiFi.mode(WIFI_STA); // Set the WiFi mode to station mode which allows the ESP32 to act as a client to a router //POATE SE VA STERGE
     WiFi.begin(WIFI_SSID, WIFI_PASS);
     while (WiFi.status() != WL_CONNECTED)
@@ -58,7 +62,7 @@ void setup()
 
     server.begin(); // Call the WebServerHandler::begin -> server(80).begin() //POATE SE VA MUTA SUB BT CONFIG
 
-#if (BACKEND_TESTING == false)
+#if (SERVER_TESTING == false)
     // SerialBT.setPin("1234");
     ELM_PORT.begin("ArduHUD", true);
 
@@ -71,7 +75,7 @@ void setup()
     }
 
     DEBUG_PORT.println("[5] 80% - Connecting to OBD scanner - Phase 2");
-    if (!ELM327Reader.begin(ELM_PORT, true, 2000))
+    if (!ELM327Reader.begin(ELM_PORT, false, 2000)) // 2nd param: bool for debug prints
     {
         DEBUG_PORT.println("[5] 80% - ERROR - Couldn't connect to OBD scanner - Phase 2");
         while (1)
@@ -92,7 +96,7 @@ static float voltageTemp, throttleTemp, coolantTemp, loadTemp, fuelTemp, oilTemp
 void loop()
 {
 
-#if (BACKEND_TESTING == true) /*----------------------TESTING USE CASE----------------------*/
+#if (SERVER_TESTING == true) /*----------------------TESTING USE CASE----------------------*/
     voltageVariable = 95;
     coolantTempVariable = 85;
     if (speedVariable >= 30)
@@ -126,14 +130,17 @@ void loop()
     loadVariable = speedVariable * 3.0;
     updateHistory(); // Update the history buffers
     server.handleClient();
+    printf("%d\n",millis());
     delay(1000);
 
 #else /*----------------------REAL USE CASE----------------------*/
 
+    timingVar2 = millis();
     switch (obd_state)
     {
     case ENG_RPM:
         rpmVariable = ELM327Reader.rpm();
+        taskYIELD();
         speedVariable = speedTemp;
         voltageVariable = voltageTemp;
         throttleVariable = throttleTemp;
@@ -161,6 +168,7 @@ void loop()
 
     case SPEED:
         speedVariable = ELM327Reader.kph();
+        taskYIELD();
         rpmVariable = rpmTemp;
         voltageVariable = voltageTemp;
         throttleVariable = throttleTemp;
@@ -173,7 +181,9 @@ void loop()
             {
                 DEBUG_PORT.print("kph: ");
                 DEBUG_PORT.println(speedVariable);
-                speedTemp = speedVariable;
+                rpmVariable < 1000 ? speedTemp = 0 : speedTemp = speedVariable;
+                int temp = speedTemp - speedVariable;
+                abs(temp) > 15 ? speedVariable = speedTemp : speedTemp = speedVariable;
                 delay(100);
                 updateHistory(); // Update the history buffers
                 server.handleClient();
@@ -183,11 +193,20 @@ void loop()
                 ELM327Reader.printError();
             }
         }
-        obd_state = VOLTAGE;
+
+        if((timingVar2 > TWO_MIN) || timingVar1 < 5){ // every 2 minutes or first time
+            obd_state = VOLTAGE;
+            TWO_MIN += TWO_MIN;
+        }
+        else{
+            obd_state = THROTTLE;
+        }
         break;
 
     case VOLTAGE:
+        timingVar1++;
         voltageVariable = ELM327Reader.batteryVoltage();
+        taskYIELD();
         rpmVariable = rpmTemp;
         speedVariable = speedTemp;
         throttleVariable = throttleTemp;
@@ -217,6 +236,7 @@ void loop()
 
     case THROTTLE:
         throttleVariable = ELM327Reader.throttle();
+        taskYIELD();
         voltageVariable = voltageTemp;
         rpmVariable = rpmTemp;
         speedVariable = speedTemp;
@@ -240,15 +260,25 @@ void loop()
                 ELM327Reader.printError();
             }
         }
-        obd_state = ENG_COOLANT;
+
+        if((timingVar2 > ONE_MIN) || timingVar1 < 5){ // every 1 minute or first time
+            obd_state = SPEED;
+            ONE_MIN += ONE_MIN;
+
+        }
+        else{
+            obd_state = LOAD;
+        }
         break;
 
     case ENG_COOLANT:
+        timingVar1++;
         voltageVariable = voltageTemp;
         rpmVariable = rpmTemp;
         speedVariable = speedTemp;
         throttleVariable = throttleTemp;
         coolantTempVariable = ELM327Reader.engineCoolantTemp();
+        taskYIELD();
         loadVariable = loadTemp;
         fuelLevelVariable = fuelTemp;
         oilTempVariable = oilTemp;
@@ -274,6 +304,7 @@ void loop()
 
     case LOAD:
         loadVariable = ELM327Reader.engineLoad();
+        taskYIELD();
         voltageVariable = voltageTemp;
         rpmVariable = rpmTemp;
         speedVariable = speedTemp;
@@ -297,11 +328,19 @@ void loop()
                 ELM327Reader.printError();
             }
         }
-        obd_state = FUEL_LEVEL;
+        if((timingVar2 > FIVE_MIN) || timingVar1 < 5){ // every 5 minutes or first time
+            obd_state = FUEL_LEVEL;
+            FIVE_MIN += FIVE_MIN;
+        }
+        else{
+            obd_state = ENG_RPM;
+        }
         break;
 
     case FUEL_LEVEL:
+        timingVar1++;
         fuelLevelVariable = ELM327Reader.fuelLevel();
+        taskYIELD();
         voltageVariable = voltageTemp;
         rpmVariable = rpmTemp;
         speedVariable = speedTemp;
@@ -329,7 +368,9 @@ void loop()
         break;
 
     case OIL_TEMP:
+        timingVar1++;
         oilTempVariable = ELM327Reader.oilTemp();
+        taskYIELD();
         voltageVariable = voltageTemp;
         rpmVariable = rpmTemp;
         speedVariable = speedTemp;
@@ -354,22 +395,25 @@ void loop()
             }
         }
         obd_state = ENG_RPM;
+        timingVar1 = 1;
         break;
     }
 #endif
 }
 
 /*
+cc44f791b278b42d6ec6d5735562d3c72a646893 - 8 parameters
+3152cc9491115158dbf6b77de17b678066de39bb - 2 parameters
 Add point system for the driver.
 
 works:
-kph !
-rpm !
-battery voltage (float) !
+kph !!!!
+rpm !!!!
+battery voltage (float) !!!!
 engine coolant temp !
 oil temp !
-engine load !
-throttle !
+engine load !!!!
+throttle !!!!
 fuel level 
 
 doesnt work:

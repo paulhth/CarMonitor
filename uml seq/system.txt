@@ -1,0 +1,140 @@
+@startuml
+
+title Fig. 4.1.3.1. Diagrama de secvență pentru CarMonitor
+
+participant Sistem as System
+participant CarMonitor #0330fc
+participant Server as Server #99FF99
+participant ELMduino #fcba03
+
+System -> CarMonitor: Initiere sistem
+activate CarMonitor
+CarMonitor -> Server: Activare WiFi\nPornire server
+activate Server
+CarMonitor -> CarMonitor: Activare Bluetooth\nConectare la OBD
+
+loop
+    CarMonitor -> CarMonitor: Evaluare parametru
+    alt rpm
+        CarMonitor -> ELMduino: Interogare rpm
+        activate ELMduino
+        ELMduino -> ECU: Trimitere mesaj
+        activate ECU
+        ECU -> ELMduino: Raspuns neprelucrat
+        deactivate ECU
+        ELMduino -> CarMonitor: Raspuns prelucrat
+        deactivate ELMduino
+        CarMonitor -> CarMonitor: Salvare valori temporare
+        CarMonitor -> Server: Trimitere valori spre afisare
+    else
+        alt kph
+            CarMonitor -> ELMduino: Interogare kph
+            activate ELMduino
+            ELMduino -> ECU: Trimitere mesaj
+            activate ECU
+            ECU -> ELMduino: Raspuns neprelucrat
+            deactivate ECU
+            ELMduino -> CarMonitor: Raspuns prelucrat
+            deactivate ELMduino
+            CarMonitor -> CarMonitor: Salvare valori temporare
+            CarMonitor -> Server: Trimitere valori spre afisare
+        else
+            alt voltage
+            CarMonitor -> ELMduino: Interogare voltage
+            activate ELMduino
+            ELMduino -> ECU: Trimitere mesaj
+            activate ECU
+            ECU -> ELMduino: Raspuns neprelucrat
+            deactivate ECU
+            ELMduino -> CarMonitor: Raspuns prelucrat
+            deactivate ELMduino
+            CarMonitor -> CarMonitor: Salvare valori temporare
+            CarMonitor -> Server: Trimitere valori spre afisare
+            else 
+                alt throttle
+                    CarMonitor -> ELMduino: Interogare throttle
+                    activate ELMduino
+                    ELMduino -> ECU: Trimitere mesaj
+                    activate ECU
+                    ECU -> ELMduino: Raspuns neprelucrat
+                    deactivate ECU
+                    ELMduino -> CarMonitor: Raspuns prelucrat
+                    deactivate ELMduino
+                    CarMonitor -> CarMonitor: Salvare valori temporare
+                    CarMonitor -> Server: Trimitere valori spre afisare
+                
+                end
+            end
+        end
+    end
+    CarMonitor -> CarMonitor: delay 
+end
+
+@enduml
+
+
+
+@startuml
+title Fig. 4.1.3.2. Diagrama de secvență pentru CarMonitor
+
+participant CarMonitor #0330fc
+participant Server as Server #99FF99
+participant ELMduino #fcba03
+activate CarMonitor
+activate Server
+    alt coolantTemp
+        CarMonitor -> ELMduino: Interogare temperatura lichid racire
+        activate ELMduino
+        ELMduino -> ECU: Trimitere mesaj
+        activate ECU
+        ECU -> ELMduino: Raspuns neprelucrat
+        deactivate ECU
+        ELMduino -> CarMonitor: Raspuns prelucrat
+        deactivate ELMduino
+        CarMonitor -> CarMonitor: Salvare valori temporare
+        CarMonitor -> Server: Trimitere valori spre afisare
+    else
+        alt engineLoad
+            CarMonitor -> ELMduino: Interogare sarcina motorului
+            activate ELMduino
+            ELMduino -> ECU: Trimitere mesaj
+            activate ECU
+            ECU -> ELMduino: Raspuns neprelucrat
+            deactivate ECU
+            ELMduino -> CarMonitor: Raspuns prelucrat
+            deactivate ELMduino
+            CarMonitor -> CarMonitor: Salvare valori temporare
+            CarMonitor -> Server: Trimitere valori spre afisare
+        else
+            alt fuelLevel
+                CarMonitor -> ELMduino: Interogare nivel combustibil
+                activate ELMduino
+                ELMduino -> ECU: Trimitere mesaj
+                activate ECU
+                ECU -> ELMduino: Raspuns neprelucrat
+                deactivate ECU
+                ELMduino -> CarMonitor: Raspuns prelucrat
+                deactivate ELMduino
+                CarMonitor -> CarMonitor: Salvare valori temporare
+                CarMonitor -> Server: Trimitere valori spre afisare
+            else
+                alt oilTemp
+                    CarMonitor -> ELMduino: Interogare temperatura ulei
+                    activate ELMduino
+                    ELMduino -> ECU: Trimitere mesaj
+                    activate ECU
+                    ECU -> ELMduino: Raspuns neprelucrat
+                    deactivate ECU
+                    ELMduino -> CarMonitor: Raspuns prelucrat
+                    deactivate ELMduino
+                    CarMonitor -> CarMonitor: Salvare valori temporare
+                    CarMonitor -> Server: Trimitere valori spre afisare
+                end
+            end
+        end
+        CarMonitor -> CarMonitor: delay 
+        deactivate Server
+    end
+
+    deactivate CarMonitor
+@enduml

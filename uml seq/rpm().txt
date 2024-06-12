@@ -1,0 +1,51 @@
+@startuml
+
+title Fig. 4.1.2.1. Diagrama de secvență pentru interogarea rpm
+
+participant User
+participant CarMonitor #0330fc
+participant ELMduino #fcba03
+participant OBD 
+participant ECU
+
+User -> CarMonitor: Interogare rpm()
+activate CarMonitor
+CarMonitor -> ELMduino: Request rpm()
+activate ELMduino
+ELMduino -> ELMduino: setare service 0x01\nsi PID 0x0C
+note right: Service 0x01 = Citire parametru\nPID 0x0C = rpm ale vehiculului
+
+alt starea ELM327 este trimitere comandă
+    ELMduino -> ELMduino: interogare PID\nqueryPID(service, pid, num_responses)
+    ELMduino -> ELMduino : formare hex array\nformatQueryArray(service, pid, num_responses);
+    ELMduino -> OBD: trimitere comanda
+    activate OBD
+    OBD -> ECU: Comanda
+    activate ECU
+    note over OBD: Comanda se trimite\nprin functia de print\nvia Bluetooth
+    ELMduino -> ELMduino: stare = WAITING_RESP
+
+else
+    alt ELM327 asteapta raspuns
+    ...
+    ECU -> OBD: Raspuns
+    deactivate ECU
+    ELMduino -> OBD: Citire raspuns si status
+    note over ELMduino: get_response() trebuie apelat\nde repetate ori pana cand\nstatusul nu mai e **ELM_GETTING_MSG**
+    OBD -> ELMduino: Raspuns + status
+    ELMduino -> ELMduino: Plasare valori in zona de memorie payload
+        alt#green ELM327 a primit raspuns cu succes
+            ELMduino -> ELMduino: Setare stare\nde trimitere comanda
+            ELMduino -> ELMduino: Parcurgere buffer pentru gasirea\nraspunsului
+            ELMduino -> ELMduino: Procesare si interpetarea datelor
+            ELMduino -> ELMduino: Setare stare pe SEND_COMMAND
+            ELMduino -> CarMonitor: Valoare parametru rpm
+            note over CarMonitor: Aceasta valoare va fi\ntrimisa catre server 
+        else Eroare sau timeout
+            ELMduino -> ELMduino: Setare stare pe SEND_COMMAND
+            note over ELMduino: Se face resetare stare din state machine\npentru urmatoarea interogare
+        end
+    end
+end
+
+@enduml

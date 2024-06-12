@@ -1,0 +1,48 @@
+@startuml
+title Fig. 3.5.2. Arhitectura sistemului
+start
+
+while (true)
+    if (SERVER_TESTING) then (No)
+        if(Deconectat de la WiFi) then (Yes)
+            :Reconectare;
+        endif
+        
+        if(Stare ENG_RPM) then (Yes)
+            :Interogare rotatii/min;
+        else (No)
+            if(Stare SPEED) then (Yes)
+                :Interogare viteza kph;
+            else (No)
+                if(Stare VOLTAGE) then (Yes)
+                    :Interogare tensiune baterie;
+                else (No)
+                    if(Stare THROTTLE) then (Yes)
+                        :Interogare pozitie pedala;
+                    else (No)
+                        if(Stare ENG_COOLANT) then (Yes)
+                            :Interogare temp. antigel;
+                        else (No)
+                            if(Stare LOAD) then (Yes)
+                                    :Interogare capac. motor;
+                            else
+                                if(Stare FUEL_LEVEL) then (Yes)
+                                    :Interogare combustibil;
+                                else (No)
+                                    if(Stare OIL_TEMP) then (Yes)
+                                        :Interogare temp. ulei;
+                                    endif
+                                endif
+                            endif
+                        endif
+                    endif
+                endif
+            endif
+        endif
+    else (Yes)
+        :Afisare valori fictive\ndar realiste;
+    endif
+endwhile
+stop
+
+@enduml

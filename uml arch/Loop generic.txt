@@ -1,10 +1,10 @@
 @startuml
-title Funcția loop()
+title Fig. 3.2.3. Funcția loop()
 start
 
 :Setarea parametrilor WiFi;
 
-if (BACKEND_TESTING) then (Yes) 
+if (SERVER_TESTING) then (Yes) 
     while (true)
         :Calculare valori dummy;
         :Trimitere către web server;

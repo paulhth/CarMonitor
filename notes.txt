@@ -1,0 +1,124 @@
+redenumire titlu: CarMonitor - ...
+
+curpins = rezumat
+
+a doua introducere = sota la sisteme de monitorizare al parametrilor masinilor
+carly sota (sota interfete si aplicatii)
+
+Fara abstract
+
+am doua introduceri:
+CAPITOLUL 1: prima pe mai multe pagini, zic ca masina are aceleasi parametri dar nu au aceleasi valori, este nevoie de interfatare cu acesti parametri, s-a hotarat standardizarea,  FLEXRAY, CAN, ETH  = necesitatea si modul in care au fost introduse PRIMUL CAPITOL si se termina cu standardul EOBD 
+
+CAPITOLUL 2: STATE OF THE ART - EOBD, se termina enuntand: domne, tinand cont de toate cele disctuate, imi propun sa fac o aplicatie care sa citeasca prin OBD si sa ii afiseze pe un webserver
+
+CAPITOLUL 3: ARHITECTURA, TEORIA, MUFA PT OBD, dupa athitecura spun ca aceste module vor avea nevoie de urmatoarele: comunicatia e wireless, imi trebuie ceva wifi, ceva bt, nu vb acum de chip = PLAN TEORETIC INTRE SISTEME
+
+CAPITOLUL 4: IMPLEMENTARE: pt bt am folosit asta, pt wifi am folosit asta, pt tot sistemul am ales esp-32 pt ca blabla, + interfatare
+
+CAPITOLUL 5: 5.1 TESTARE, mod de utilizare, 5.2 PLAN DE AFACERI
+
+CAPITOLUL 6: CONCLUZIE, , obiective indeplinite, ce a mers, ce a mers prost, si deschid o cale de dezvoltare pentru master
+
+DEMO MAXIM 2 MIN
+
+REORGANIZARE
+
+numarul de referinte pe care il am e ok
+
+
+DECI: 
+termin de scris interfata, DNE
+reorganizez,  DNE
+scriu testarea, DNE
+adaug index la figuri si diagrame DNE
+configurarea si planul de afaceri DNE
+completez sota DNE
+concluzia DNE
+fix bibliografie
+
+Month	Units Sold	Revenue (RON)	Total Monthly Cost (RON)	Profit (RON)
+1	2	5000	14505.34	-9505.34
+2	3	7500	14701.65	-6201.65
+3	5	12500	14959.04	-3459.04
+4	6	15000	15301.17	-3001.17
+5	9	22500	15746.89	6753.11
+6	13	32500	16336.44	16163.56
+7	19	47500	17134.84	30365.16
+8	27	67500	18223.80	49276.20
+9	38	95000	19695.67	75304.33
+10	53	132500	21789.42	110710.58
+11	74	185000	23617.23	161382.77
+12	94	235000	26668.92	208331.08
+
+INMPLEMENTARI VIITOARE
+
+Lastly, the project emphasized the importance of scalability, ensuring that the system can be easily expanded or upgraded as needed. The modular design of both the hardware and software components allows for straightforward integration of new features or enhancements. This flexibility is essential for keeping pace with technological advancements and changing user needs. The easy scalability of the CarGuard Monitor system ensures that it can grow alongside the business, adapting to new challenges and opportunities without requiring significant overhauls or redesigns.
+
+
+
+
+SOTA: 
+
+AZUGA DNE
+Hyundai app DNE
+OVMS = Open Vehicle Monitoring System DNE
+
+De mentionat:
+IVMS (In-Vehicle-Monitoring-System) / RMS
+
+
+
+	Cost	Dificultate utilizare	Scalabilitate	Fiabilitatea datelor	Functionalități
+Scanner OBDII de bază	Scăzut	Ușor (prin aplicație)	Mică	Mică	Diagnoză de bază
+Scanner OBDII avansat	Mare	Greu	Mică	Mare	Diagnoză avansată
+Sistem DYI	Mediu	Mediu	Mică	Medie	Monitorizarea depinde de senzorii plasați de utilizator
+Car Monitor	Scăzut	Mediu	Mare	Medie	Monitorizarea parametrilor în timp real (disponibili în API) + diagnoză de bază al DTC
+
+
+
+
+
+
+asepcte generale, alt titlu, istoric OBD DNE
+capitolul 3 ii spun altfel decat arhitectura = conceptia unui 
+in arhi am module, ceva ce culege date,
+3.1 introducerea arhitecrurii, ce folosesc, ce se potriveste pentru ce am nevoie DNE
+primul subvapotil: ce am nevoie,  DNE
+la 3.2 zic ca se potriveste esp-32 DNE
+la 3.3 redenumesc DNE
+si la 4,1 implementare modul bluetooth DNE
+CAPITOL 3 ARHITECRUEA SISTEMULUI CARMONITOR DNE
+
+nu merge o singura subsectiune 3.3.1 (ar trebui cel putin 3.3.2) DNE
+
+IMPLEMENTARE Detaliata e pleonasm (DEtalii de implementare / modul de implelentare) DNE
+
+4.1.2 interogarea de parametrii DNE
+
+4.2 implementarea sevrverului de monitorizare si in el povestesc ca e webasync DNE
+
+4.3.1 modific in nu aspecte generale DNE
+
+4.5 testare si configurare DNE
+
+cap 5 are legatura cu planul de afaceri = premize antreprenoriale DNE
+
+
+
+DE COMPLETAT cu imagini din timpul testarii
+2 demo uri, unul mai lung in care arat cum conectez obd, cum se conecteaza placa, si ce arata (4 parametrii)
+alti 4 parametrii in al doilea demo mai scurt
+
+De facut prezentare
+De completat forumularul fizic scanat
+
+README.MD DNE
+
+FIX Bibliografie DNE
+
+
+
+
+
+cand e suprascriere = s-a subscris de 10 ori, 9, ceva ori, asta isneamna ca trebuie sa dea la toti care au cerut

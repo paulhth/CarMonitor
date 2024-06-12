@@ -1,0 +1,33 @@
+@startuml
+
+title Fig. 4.2.1.1. Diagrama de dinamică pentru WebAsyncServer
+
+participant Sistem
+participant CarMonitor #0330fc
+participant ELMduino #fcba03
+participant Server as server #99FF99
+participant Interfața as Interface 
+
+
+Sistem -> CarMonitor: Activare
+activate CarMonitor
+CarMonitor -> server: Start server HTTP (80)
+activate server
+server -> Interface: Arată interfața
+activate Interface
+
+loop
+    CarMonitor -> ELMduino: Interogare parametri
+    activate ELMduino
+    ELMduino -> CarMonitor: Parametri
+    deactivate ELMduino
+
+    CarMonitor -> server: updateHistory()
+    note left: Funcția **updateHistory()**\neste folosită pentru a\nactualiza graficele pentru\nviteză si rpm
+    CarMonitor -> server: handleClient()
+    server -> Interface: Prezintă date
+
+end
+
+
+@enduml
