@@ -18,7 +18,7 @@
  *
  * @warning The value of this macro will determine the behavior of the web server. It can either display the real-time sensor data or the testing data.
  */
-#define SERVER_TESTING false
+#define SERVER_TESTING true
 
 #define ELM_PORT SerialBT
 #define DEBUG_PORT Serial

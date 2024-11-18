@@ -130,7 +130,7 @@ void loop()
     loadVariable = speedVariable * 3.0;
     updateHistory(); // Update the history buffers
     server.handleClient();
-    printf("%d\n",millis());
+    //printf("%d\n",millis());
     delay(1000);
 
 #else /*----------------------REAL USE CASE----------------------*/
